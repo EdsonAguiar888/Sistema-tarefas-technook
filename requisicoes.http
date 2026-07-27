@@ -1,0 +1,25 @@
+### Listar todas as tarefas
+GET http://localhost:3000/tarefas
+
+###
+
+### Buscar tarefa por ID
+GET http://localhost:3000/tarefas/
+
+###
+
+### Criar uma nova tarefa
+POST http://localhost:3000/tarefas/
+Content-Type: application/json
+
+{
+
+    "titulo": "pular",
+    "descricao": "jogar bola ",
+    "status": "ABERTA"
+}
+
+###
+
+### Deletar uma tarefa
+DELETE http://localhost:3000/tarefas/70a794ee-f23f-40b1-9530-052fd8d55ed0
