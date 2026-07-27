@@ -1,9 +1,25 @@
-import { Controller, Get, Post, Delete, Param, Body } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Param, Body, Query } from '@nestjs/common';
 import { TarefasService } from './tarefas.service';
- 
+import { StatusTarefa, Tarefa } from './tarefa.interface';
+
+
 @Controller('tarefas')
 export class TarefasController {
   constructor(private tarefasService: TarefasService) {}
+
+
+@Get() // Ouve GET em '/tarefas' e também em '/tarefas?status=ABERTA'
+  listar(@Query('status') status: StatusTarefa): Tarefa[] {
+    
+    if (status) {
+      return this.tarefasService.buscarPorStatus(status);
+    }
+
+    
+    return this.tarefasService.listarTodas();
+  }
+
+
  
   @Get()
   listarTodas() {

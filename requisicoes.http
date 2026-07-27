@@ -8,13 +8,22 @@ GET http://localhost:3000/tarefas/
 
 ###
 
+
+GET http://localhost:3000/tarefas?status=ABERTA
+
+
+
+
+
+
+
 ### Criar uma nova tarefa
 POST http://localhost:3000/tarefas/
 Content-Type: application/json
 
 {
 
-    "titulo": "pular",
+    "titulo": "aaaaaa",
     "descricao": "jogar bola ",
     "status": "ABERTA"
 }
@@ -23,3 +32,5 @@ Content-Type: application/json
 
 ### Deletar uma tarefa
 DELETE http://localhost:3000/tarefas/70a794ee-f23f-40b1-9530-052fd8d55ed0
+
+
