@@ -6,10 +6,14 @@ import { ok } from 'assert';
 @Injectable()
 export class TarefasService {
 
-    private tarefas: Tarefa[] = [{ id: "1",
+    private tarefas: Tarefa[] = [
+        
+    { id: "1",
     titulo: "top",
     descricao: "ok",
-    status: StatusTarefa.CONCLUIDA}];
+    status: StatusTarefa.CONCLUIDA}
+    
+    ];
 
     listarTodas(): Tarefa[] {
         return this.tarefas;
