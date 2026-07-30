@@ -1,3 +1,5 @@
+
+
 ### Listar todas as tarefas
 GET http://localhost:3000/tarefas
 
@@ -9,12 +11,16 @@ GET http://localhost:3000/tarefas/
 ###
 
 
+### Buscar pelo status
 GET http://localhost:3000/tarefas?status=ABERTA
 
+###
 
 
+### Buscar pelo status e prioridade
+GET http://localhost:3000/tarefas?status=ABERTA&prioridade=alta
 
-
+###
 
 
 ### Criar uma nova tarefa
@@ -23,9 +29,10 @@ Content-Type: application/json
 
 {
 
-    "titulo": "aaaaaa",
+    "titulo": "bbbbbbb",
     "descricao": "jogar bola ",
-    "status": "ABERTA"
+    "prioridade": "baixa",
+    "status": "CONCLUIDA"
 }
 
 ###
@@ -33,4 +40,4 @@ Content-Type: application/json
 ### Deletar uma tarefa
 DELETE http://localhost:3000/tarefas/70a794ee-f23f-40b1-9530-052fd8d55ed0
 
-
+###

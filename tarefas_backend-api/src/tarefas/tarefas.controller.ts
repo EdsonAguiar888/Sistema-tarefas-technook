@@ -8,17 +8,33 @@ export class TarefasController {
   constructor(private tarefasService: TarefasService) {}
 
 
-@Get() // Ouve GET em '/tarefas' e também em '/tarefas?status=ABERTA'
-  listar(@Query('status') status: StatusTarefa): Tarefa[] {
+// @Get() // Ouve GET em '/tarefas' e também em '/tarefas?status=ABERTA'
+//   listar(@Query('status') status: StatusTarefa): Tarefa[] {
     
-    if (status) {
-      return this.tarefasService.buscarPorStatus(status);
-    }
+//     if (status) {
+//       return this.tarefasService.buscarPorStatus(status);
+//     }    
+//     return this.tarefasService.listarTodas();
+//   }
 
+
+
+//=============================================================================
+
+@Get()
+  listar(
+    @Query('status') status?: StatusTarefa,
+    @Query('prioridade') prioridade?: string,
+  ): Tarefa[] {
     
+    // Se passou status ou prioridade, aplica o filtro no service
+    if (status || prioridade) {
+      return this.tarefasService.buscarComFiltros(status, prioridade);
+    }    
     return this.tarefasService.listarTodas();
   }
 
+  //=============================================================================
 
  
   @Get()
@@ -32,8 +48,8 @@ export class TarefasController {
   }
  
   @Post()
-  criar(@Body() body: { titulo: string; descricao: string }) {
-    return this.tarefasService.criar(body.titulo, body.descricao);
+  criar(@Body() body: { titulo: string; descricao: string; prioridade: string }) {
+    return this.tarefasService.criar(body.titulo, body.descricao, body.prioridade);
   }
 
     @Delete(':id')

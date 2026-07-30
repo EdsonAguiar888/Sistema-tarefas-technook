@@ -1,0 +1,29 @@
+import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
+
+@Controller('usuarios')
+export class UsuariosController {
+
+  // A rota espera um ID na estrutura da URL (ex: GET /usuarios/42)
+  @Get(':id')
+  buscarPorId(@Param('id', ParseIntPipe) id: number) {
+    // O @Param captura o "42" da URL, e o ParseIntPipe o converte para número
+    return {
+      mensagem: `Exibindo perfil do usuário de ID #${id}`,
+      usuario: {
+        id: id,
+        nome: 'João Silva',
+        email: 'joao@email.com',
+      },
+    };
+  }
+}
+
+// Como o cliente chama no navegador/Postman:
+
+// GET http://localhost:3000/usuarios/42
+
+// Resultado: Traz o usuário de ID 42.
+
+// Se chamar sem o ID (GET http://localhost:3000/usuarios): 
+
+// O NestJS nem entra nesse método e retorna erro 404 (Não Encontrado).

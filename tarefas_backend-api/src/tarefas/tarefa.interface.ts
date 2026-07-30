@@ -7,6 +7,11 @@ export interface Tarefa {
     descricao: string;
     status: StatusTarefa;
 
+    prioridade: string;
+
+
+    
+
 }
 
 

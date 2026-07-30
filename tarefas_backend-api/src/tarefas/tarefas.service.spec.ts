@@ -15,4 +15,13 @@ describe('TarefasService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
+
+  it('should create a task with the provided priority', () => {
+    const tarefa = service.criar('Estudar', 'Resolver erro', 'alta');
+
+    expect(tarefa.prioridade).toBe('alta');
+    expect(service.listarTodas()).toContainEqual(
+      expect.objectContaining({ id: tarefa.id, prioridade: 'alta' }),
+    );
+  });
 });

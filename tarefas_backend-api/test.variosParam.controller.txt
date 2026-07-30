@@ -1,0 +1,113 @@
+import { Controller, Get, Param, ParseIntPipe, BadRequestException } from '@nestjs/common';
+
+// DTO/Interface interna para tipar quando pegamos todos os parâmetros de uma vez
+interface ParametrosRelatorio {
+  orgSlug: string;
+  filialId: string;
+  ano: string;
+  mes: string;
+}
+
+@Controller('organizacoes')
+export class RelatoriosController {
+
+  /**
+   * ABORDAGEM 1: Extraindo cada @Param() individualmente
+   * Rota: GET /organizacoes/tech-corp/filiais/10/relatorios/2026/07
+   */
+  @Get(':orgSlug/filiais/:filialId/relatorios/:ano/:mes')
+  buscarRelatorioMensal(
+    @Param('orgSlug') orgSlug: string,
+    @Param('filialId', ParseIntPipe) filialId: number,
+    @Param('ano', ParseIntPipe) ano: number,
+    @Param('mes', ParseIntPipe) mes: number,
+  ) {
+    // Validação de regra de negócio para os parâmetros
+    if (mes < 1 || mes > 12) {
+      throw new BadRequestException('O mês informado deve estar entre 1 e 12.');
+    }
+
+    return {
+      sucesso: true,
+      mensagem: `Relatório gerado com sucesso!`,
+      contexto: {
+        organizacao: orgSlug.toUpperCase(),
+        filialIdentificador: filialId,
+        periodo: `${mes}/${ano}`,
+      },
+      dadosFinanceiros: {
+        faturamento: 150000.00,
+        despesas: 82000.00,
+        lucroLiquido: 68000.00,
+      },
+    };
+  }
+
+
+  /**
+   * ABORDAGEM 2: Coletando TODOS os @Param() de uma vez em um único objeto
+   * Rota: GET /organizacoes/tech-corp/filiais/10/relatorios/2026/07/resumido
+   * 
+   * Útil quando você tem muitos parâmetros e quer repassar o objeto direto para o Service.
+   */
+  @Get(':orgSlug/filiais/:filialId/relatorios/:ano/:mes/resumido')
+  buscarRelatorioResumido(@Param() params: ParametrosRelatorio) {
+    // Todos os parâmetros vêm dentro do objeto 'params'
+    const { orgSlug, filialId, ano, mes } = params;
+
+    return {
+      mensagem: `Resumo do relatório da org '${orgSlug}', filial #${filialId} referente a ${mes}/${ano}`,
+      status: 'Aprovado',
+    };
+  }
+}
+
+
+
+
+
+// Como testar no seu cliente HTTP (Postman, Insomnia, Navegador):
+// Teste 1 (Múltiplos parâmetros individuais):
+// Requisição: GET http://localhost:3000/organizacoes/neocharge/filiais/40/relatorios/2026/07
+
+// Resposta:
+
+// JSON
+// {
+//   "sucesso": true,
+//   "mensagem": "Relatório gerado com sucesso!",
+//   "contexto": {
+//     "organizacao": "NEOCHARGE",
+//     "filialIdentificador": 40,
+//     "periodo": "7/2026"
+//   },
+//   "dadosFinanceiros": {
+//     "faturamento": 150000,
+//     "despesas": 82000,
+//     "lucroLiquido": 68000
+//   }
+// }
+
+
+
+
+// Teste 2 (O que acontece com parâmetro inválido):
+
+// Requisição: GET http://localhost:3000/organizacoes/neocharge/filiais/40/relatorios/2026/15 (mês 15)
+
+// Resposta: Erro 400 Bad Request disparado pela nossa validação.
+
+
+
+
+// Teste 3 (Faltando parâmetros na URL):
+// Requisição: GET http://localhost:3000/organizacoes/neocharge/filiais/40/relatorios/2026 (faltou o mês)
+
+// Resposta: Erro 404 Not Found automático do NestJS, pois a rota com essa estrutura exata não existe.
+
+// Destaques do Código:
+// Hierarquia: A URL :orgSlug/filiais/:filialId/relatorios/:ano/:mes lê de forma natural: "Dentro da Org X, na Filial Y, pegue o relatório do Ano Z no Mês W".
+
+// Transformação Inline: Usamos ParseIntPipe nos parâmetros filialId, ano e mes para que o NestJS já nos entregue essas variáveis como number em vez de string.
+
+// Flexibilidade: A Abordagem 2 mostra como o @Param() sem argumentos agrupa todos os parâmetros da rota num único objeto, evitando poluir a lista de argumentos do método.

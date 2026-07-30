@@ -12,6 +12,7 @@ export class TarefasService {
             id: "1",
             titulo: "top",
             descricao: "ok",
+            prioridade: "alta",
             status: StatusTarefa.CONCLUIDA
         }
 
@@ -28,6 +29,25 @@ export class TarefasService {
         return this.tarefas.filter(t => t.status === status);
     }
 
+    // buscarComFiltros(status: StatusTarefa): Tarefa[] {        
+    //     return this.tarefas.filter(t => t.status === status );
+    // }
+
+
+
+buscarComFiltros(status?: StatusTarefa, prioridade?: string): Tarefa[] {
+    
+    return this.tarefas.filter(tarefa => {
+
+      const bateuStatus = status ? tarefa.status === status : true;
+
+      const bateuPrioridade = prioridade ? tarefa.prioridade === prioridade : true;
+
+      return bateuStatus && bateuPrioridade;
+    });
+  }
+
+
 
 
 
@@ -39,12 +59,13 @@ export class TarefasService {
     }
 
 
-    criar(titulo: string, descricao: string): Tarefa {
+    criar(titulo: string, descricao: string, prioridade: string): Tarefa {
 
         const tarefa: Tarefa = {
             id: uuidv4(),
             titulo,
             descricao,
+            prioridade,
             status: StatusTarefa.ABERTA
         }
 

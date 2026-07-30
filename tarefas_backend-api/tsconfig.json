@@ -14,6 +14,7 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
+    "ignoreDeprecations": "6.0",  //Adicionada essa linha para eliminar o erro na linha de cima. "baseUrl": "./"
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": true,
