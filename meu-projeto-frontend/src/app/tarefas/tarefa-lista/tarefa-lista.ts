@@ -29,7 +29,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Necessário para usar o AsyncPipe
 import { Observable } from 'rxjs';
-import { TarefaService, Tarefa } from '../tarefa.service';
+import { TarefaService, Tarefa } from '../tarefa.service'; // Acrecentado interface em tarefa.service.ts para corrigir erro de importacao
 
 @Component({
   selector: 'app-tarefa-lista',
