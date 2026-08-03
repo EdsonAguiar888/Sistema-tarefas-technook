@@ -1,26 +1,73 @@
-// src/app/tarefas/tarefa.service.ts
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+// // src/app/tarefas/tarefa.service.ts
+// import { Injectable } from '@angular/core';
+// import { HttpClient } from '@angular/common/http';
+// import { Observable } from 'rxjs';
+
+// export interface Tarefa {  //Acrecentado a interface para corrigir erro de importacao de Tarefa em tarefa-lista.ts
+//   id: number;
+//   titulo: string;
+//   descricao: string;
+//   concluida: boolean;
+// }
+
+// @Injectable({ providedIn: 'root' })
+// export class TarefaService {
+//   private apiUrl = 'http://localhost:3000/tarefas';
+ 
+//   constructor(private http: HttpClient) {}
+ 
+//   listarTodas(): Observable<any[]> {
+//     return this.http.get<any[]>(this.apiUrl);
+//   }
+ 
+//   criar(tarefa: { titulo: string; descricao: string }): Observable<any> {
+//     return this.http.post(this.apiUrl, tarefa);
+//   }
+// }
+
+
+
+
+import { Injectable, inject } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-export interface Tarefa {  //Acrecentado a interface para corrigir erro de importacao de Tarefa em tarefa-lista.ts
-  id: number;
+export interface Tarefa {
+  id?: string;
   titulo: string;
   descricao: string;
-  concluida: boolean;
+  prioridade: 'baixa' | 'media' | 'alta';
+  status: 'ABERTA' | 'EM_ANDAMENTO' | 'CONCLUIDA';
 }
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class TarefaService {
-  private apiUrl = 'http://localhost:3000/tarefas';
- 
-  constructor(private http: HttpClient) {}
- 
-  listarTodas(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
+  private http = inject(HttpClient);
+  private API_URL = 'http://localhost:3000/tarefas';
+
+  // Listar tarefas com filtros opcionais (GET /tarefas?status=X&prioridade=Y)
+  listar(status?: string, prioridade?: string): Observable<Tarefa[]> {
+    let params = new HttpParams();
+    if (status) params = params.set('status', status);
+    if (prioridade) params = params.set('prioridade', prioridade);
+
+    return this.http.get<Tarefa[]>(this.API_URL, { params });
   }
- 
-  criar(tarefa: { titulo: string; descricao: string }): Observable<any> {
-    return this.http.post(this.apiUrl, tarefa);
+
+  // Buscar por ID (GET /tarefas/:id)
+  buscarPorId(id: string): Observable<Tarefa> {
+    return this.http.get<Tarefa>(`${this.API_URL}/${id}`);
+  }
+
+  // Criar nova tarefa (POST /tarefas)
+  criar(tarefa: Tarefa): Observable<Tarefa> {
+    return this.http.post<Tarefa>(this.API_URL, tarefa);
+  }
+
+  // Deletar tarefa (DELETE /tarefas/:id)
+  deletar(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.API_URL}/${id}`);
   }
 }
