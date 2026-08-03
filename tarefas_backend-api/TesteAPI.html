@@ -11,10 +11,11 @@
     pre { background: #f4f4f4; padding: 15px; border-radius: 5px; }
     
     /* Estilos adicionados para os inputs e a lista */
-    .form-container { margin: 20px 0; display: flex; gap: 10px; }
-    input { padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+    .form-container { margin: 20px 0; display: flex; gap: 10px; flex-wrap: wrap; }
+    input, select { padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
     ul { list-style: none; padding: 0; }
     li { background: #fff; border: 1px solid #ddd; padding: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border-radius: 4px; }
+    .badge { font-size: 11px; padding: 2px 6px; background: #eee; border-radius: 3px; margin-left: 5px; }
     .btn-deletar { background-color: #ff4d4d; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; }
   </style>
 </head>
@@ -22,10 +23,23 @@
 
   <h1>Consumindo API do NestJS</h1>
 
-  <!-- INPUTS SIMPLES PARA CRIAR TAREFA -->
+  <!-- INPUTS SIMPLES PARA CRIAR TAREFA (INCLUINDO STATUS E PRIORIDADE) -->
   <div class="form-container">
     <input type="text" id="tituloInput" placeholder="Título da tarefa..." />
     <input type="text" id="descricaoInput" placeholder="Descrição..." />
+    
+    <select id="prioridadeSelect">
+      <option value="baixa">Prioridade: Baixa</option>
+      <option value="media">Prioridade: Média</option>
+      <option value="alta">Prioridade: Alta</option>
+    </select>
+
+    <select id="statusSelect">
+      <option value="ABERTA">Status: ABERTA</option>
+      <option value="EM_ANDAMENTO">Status: EM ANDAMENTO</option>
+      <option value="CONCLUIDA">Status: CONCLUÍDA</option>
+    </select>
+
     <button onclick="criarTarefa()">Criar Tarefa (POST)</button>
   </div>
 
@@ -55,7 +69,7 @@
         // 3. Exibe o resultado dentro da tag <pre id="resultado"> em formato legível
         document.getElementById('resultado').textContent = JSON.stringify(dados, null, 2);
 
-        // Renderiza as tarefas na <ul> com o botão Excluir
+        // Renderiza as tarefas na <ul> com o botão Excluir e exibe status/prioridade
         const lista = document.getElementById('listaTarefas');
         lista.innerHTML = '';
         dados.forEach(tarefa => {
@@ -63,6 +77,8 @@
           li.innerHTML = `
             <div>
               <strong>${tarefa.titulo}</strong> - ${tarefa.descricao || ''}
+              <span class="badge">${tarefa.prioridade || 'baixa'}</span>
+              <span class="badge">${tarefa.status || 'ABERTA'}</span>
             </div>
             <button class="btn-deletar" onclick="deletarTarefa('${tarefa.id}')">Excluir</button>
           `;
@@ -78,10 +94,14 @@
       try {
         const tituloVal = document.getElementById('tituloInput').value;
         const descricaoVal = document.getElementById('descricaoInput').value;
+        const prioridadeVal = document.getElementById('prioridadeSelect').value;
+        const statusVal = document.getElementById('statusSelect').value;
 
         const novaTarefa = {
           titulo: tituloVal || 'Tarefa via HTML',
-          descricao: descricaoVal || 'Criada ao clicar no botão do navegador!'
+          descricao: descricaoVal || 'Criada ao clicar no botão do navegador!',
+          prioridade: prioridadeVal,
+          status: statusVal
         };
 
         // O fetch() com opções para envio de POST
@@ -95,7 +115,7 @@
 
         const dadosCriados = await resposta.json();
 
-        // Limpa os inputs
+        // Limpa os inputs de texto
         document.getElementById('tituloInput').value = '';
         document.getElementById('descricaoInput').value = '';
 
