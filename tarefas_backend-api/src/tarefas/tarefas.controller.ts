@@ -43,7 +43,7 @@ export class TarefasController {
 
   @Post()
   criar(@Body() body: { titulo: string; descricao: string; prioridade: string; status: string; }) {
-    console.log('Body recebido no Controller:' , body);
+    // console.log('Body recebido no Controller:' , body);
     return this.tarefasService.criar(body.titulo, body.descricao, body.prioridade, body.status);
   }
 
