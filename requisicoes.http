@@ -29,10 +29,10 @@ Content-Type: application/json
 
 {
 
-    "titulo": "bbbbbbb",
+    "titulo": "jjjjjjjjjjjjjj",
     "descricao": "jogar bola ",
-    "prioridade": "baixa",
-    "status": "CONCLUIDA"
+    "prioridade": "ALTA",
+    "status": "EM_ANDAMENTO"
 }
 
 ###

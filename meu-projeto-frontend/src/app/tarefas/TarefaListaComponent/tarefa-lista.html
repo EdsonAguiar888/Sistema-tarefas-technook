@@ -19,6 +19,16 @@
       </div>
 
       <div class="form-row">
+        
+        <div class="form-group">
+          <label>Status:</label>
+          <select name="status" [(ngModel)]="novaTarefa.status">
+            <option value="ABERTA">Aberta</option>
+            <option value="EM_ANDAMENTO">Em Andamento</option>
+            <option value="CONCLUIDA">Concluída</option>
+          </select>
+        </div>
+        
         <div class="form-group">
           <label>Prioridade:</label>
           <select name="prioridade" [(ngModel)]="novaTarefa.prioridade">
@@ -28,14 +38,7 @@
           </select>
         </div>
 
-        <div class="form-group">
-          <label>Status:</label>
-          <select name="status" [(ngModel)]="novaTarefa.status">
-            <option value="ABERTA">Aberta</option>
-            <option value="EM_ANDAMENTO">Em Andamento</option>
-            <option value="CONCLUIDA">Concluída</option>
-          </select>
-        </div>
+
       </div>
 
       <button type="submit" class="btn-primary">Criar Tarefa</button>

@@ -1,6 +1,5 @@
 
 
-
 import { Injectable } from '@nestjs/common';
 import { StatusTarefa, Tarefa } from './tarefa.interface';
 import { v4 as uuidv4 } from 'uuid';
@@ -32,11 +31,6 @@ export class TarefasService {
         return this.tarefas.filter(t => t.status === status);
     }
 
-    // buscarComFiltros(status: StatusTarefa): Tarefa[] {        
-    //     return this.tarefas.filter(t => t.status === status );
-    // }
-
-
 
     buscarComFiltros(status?: StatusTarefa, prioridade?: string): Tarefa[] {
 
@@ -52,24 +46,19 @@ export class TarefasService {
 
 
 
-
-
-
-
-
     buscarPorId(id: string): Tarefa | undefined {   // Esta dando erro no return informando que tarefa nao pode ser underf
         return this.tarefas.find(t => t.id === id);
     }
 
 
-    criar(titulo: string, descricao: string, prioridade: string): Tarefa {
+    criar(titulo: string, descricao: string, prioridade: string,status: string): Tarefa {
 
         const tarefa: Tarefa = {
             id: uuidv4(),
             titulo,
             descricao,
             prioridade,
-            status: StatusTarefa.ABERTA
+            status: (status as StatusTarefa) || StatusTarefa.ABERTA
         }
 
         this.tarefas.push(tarefa);
