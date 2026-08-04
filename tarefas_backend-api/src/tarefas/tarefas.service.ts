@@ -1,3 +1,6 @@
+
+
+
 import { Injectable } from '@nestjs/common';
 import { StatusTarefa, Tarefa } from './tarefa.interface';
 import { v4 as uuidv4 } from 'uuid';
@@ -35,17 +38,17 @@ export class TarefasService {
 
 
 
-buscarComFiltros(status?: StatusTarefa, prioridade?: string): Tarefa[] {
-    
-    return this.tarefas.filter(tarefa => {
+    buscarComFiltros(status?: StatusTarefa, prioridade?: string): Tarefa[] {
 
-      const bateuStatus = status ? tarefa.status === status : true;
+        return this.tarefas.filter(tarefa => {
 
-      const bateuPrioridade = prioridade ? tarefa.prioridade === prioridade : true;
+            const bateuStatus = status ? tarefa.status === status : true;
 
-      return bateuStatus && bateuPrioridade;
-    });
-  }
+            const bateuPrioridade = prioridade ? tarefa.prioridade === prioridade : true;
+
+            return bateuStatus && bateuPrioridade;
+        });
+    }
 
 
 

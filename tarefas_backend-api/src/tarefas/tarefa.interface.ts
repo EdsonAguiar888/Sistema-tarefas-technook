@@ -8,10 +8,6 @@ export interface Tarefa {
     status: StatusTarefa;
 
     prioridade: string;
-
-
-    
-
 }
 
 

@@ -1,114 +1,3 @@
-/* .container {
-  max-width: 800px;
-  margin: 20px auto;
-  font-family: Arial, sans-serif;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.card-form, .card-filtros, .card-lista {
-  background: #ffffff;
-  padding: 20px;
-  border-radius: 8px;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 12px;
-}
-
-.form-row, .filtros-grid {
-  display: flex;
-  gap: 16px;
-}
-
-input, select {
-  padding: 8px 12px;
-  border: 1px solid #cbd5e1;
-  border-radius: 4px;
-  font-size: 14px;
-}
-
-.btn-primary {
-  background-color: #2563eb;
-  color: white;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.grid-tarefas {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.card-tarefa {
-  padding: 16px;
-  border-radius: 6px;
-  border-left: 5px solid #cbd5e1;
-  background-color: #f8fafc;
-}
-
-.card-tarefa.alta { border-left-color: #ef4444; }
-.card-tarefa.media { border-left-color: #f59e0b; }
-.card-tarefa.baixa { border-left-color: #10b981; }
-
-.header-tarefa {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.btn-deletar {
-  background: #fee2e2;
-  color: #991b1b;
-  border: 1px solid #fca5a5;
-  padding: 4px 8px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.footer-tarefa {
-  display: flex;
-  gap: 8px;
-  margin-top: 8px;
-}
-
-.badge {
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  background-color: #e2e8f0;
-}
-
-.id-texto {
-  display: block;
-  font-size: 11px;
-  color: #94a3b8;
-  margin-top: 6px;
-}
-
-.resultado-id {
-  background: #f1f5f9;
-  padding: 12px;
-  border-radius: 6px;
-  margin-top: 12px;
-}
-
-.resultado-header {
-  display: flex;
-  justify-content: space-between;
-} */
-
-
-
-
 /* ==========================================================================
    RESET E ESTILOS GERAIS
    ========================================================================== */
@@ -117,12 +6,15 @@ input, select {
   margin: 30px auto;
   padding: 0 16px;
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  color: #1e293b; /* Texto escuro com alto contraste */
+  color: #1e293b;
+  /* Texto escuro com alto contraste */
   background-color: #f8fafc;
 }
 
 /* Títulos Principais */
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   color: #0f172a;
   font-weight: 700;
   margin-bottom: 12px;
@@ -144,8 +36,8 @@ h3 {
 /* ==========================================================================
    ESTRUTURA DOS CARDS (SEÇÕES)
    ========================================================================== */
-.card-form, 
-.card-filtros, 
+.card-form,
+.card-filtros,
 .card-lista {
   background: #ffffff;
   border: 1px solid #e2e8f0;
@@ -159,20 +51,24 @@ h3 {
 /* ==========================================================================
    FORMULÁRIOS E INPUTS
    ========================================================================== */
-.form-group, .filtro-item, .busca-id-item {
+.form-group,
+.filtro-item,
+.busca-id-item {
   display: flex;
   flex-direction: column;
   gap: 6px;
   margin-bottom: 14px;
 }
 
-.form-row, .filtros-grid {
+.form-row,
+.filtros-grid {
   display: flex;
   gap: 16px;
   flex-wrap: wrap;
 }
 
-.form-row .form-group, .filtros-grid .filtro-item {
+.form-row .form-group,
+.filtros-grid .filtro-item {
   flex: 1;
   min-width: 200px;
 }
@@ -184,7 +80,7 @@ label {
 }
 
 /* Campos de Texto e Seletores */
-input[type="text"], 
+input[type="text"],
 select {
   width: 100%;
   padding: 10px 14px;
@@ -197,7 +93,7 @@ select {
   transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
 }
 
-input[type="text"]:focus, 
+input[type="text"]:focus,
 select:focus {
   outline: none;
   border-color: #2563eb;
@@ -224,25 +120,29 @@ button {
 }
 
 /* Botão Principal: Criar / Ação Positiva (Verde Esmeralda) */
-.btn-primary, button[type="submit"] {
+.btn-primary,
+button[type="submit"] {
   background-color: #10b981;
   color: #ffffff;
   box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
 }
 
-.btn-primary:hover, button[type="submit"]:hover {
+.btn-primary:hover,
+button[type="submit"]:hover {
   background-color: #059669;
   box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
   transform: translateY(-1px);
 }
 
 /* Botão Secundário / Busca (Azul) */
-.input-btn button, .card-filtros button {
+.input-btn button,
+.card-filtros button {
   background-color: #2563eb;
   color: #ffffff;
 }
 
-.input-btn button:hover, .card-filtros button:hover {
+.input-btn button:hover,
+.card-filtros button:hover {
   background-color: #1d4ed8;
   transform: translateY(-1px);
 }
@@ -265,7 +165,8 @@ button {
 /* ==========================================================================
    LISTAGEM DE TAREFAS & CARDS DINÂMICOS
    ========================================================================== */
-.grid-tarefas, ul#listaTarefas {
+.grid-tarefas,
+ul#listaTarefas {
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -274,10 +175,12 @@ button {
 }
 
 /* Estilo Individual dos Itens de Tarefa */
-.card-tarefa, ul#listaTarefas li {
+.card-tarefa,
+ul#listaTarefas li {
   background-color: #ffffff;
   border: 1px solid #e2e8f0;
-  border-left: 6px solid #94a3b8; /* Cor padrão da borda */
+  border-left: 6px solid #94a3b8;
+  /* Cor padrão da borda */
   border-radius: 10px;
   padding: 16px 20px;
   display: flex;
@@ -287,15 +190,28 @@ button {
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-.card-tarefa:hover, ul#listaTarefas li:hover {
+.card-tarefa:hover,
+ul#listaTarefas li:hover {
   transform: translateX(3px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 /* Destaque por Prioridade (Intuitivo) */
-.card-tarefa.alta { border-left-color: #ef4444; }   /* Vermelho para prioridade alta */
-.card-tarefa.media { border-left-color: #f59e0b; }  /* Amarelo/Laranja para prioridade média */
-.card-tarefa.baixa { border-left-color: #10b981; }  /* Verde para prioridade baixa */
+.card-tarefa.alta {
+  border-left-color: #ef4444;
+}
+
+/* Vermelho para prioridade alta */
+.card-tarefa.media {
+  border-left-color: #f59e0b;
+}
+
+/* Amarelo/Laranja para prioridade média */
+.card-tarefa.baixa {
+  border-left-color: #10b981;
+}
+
+/* Verde para prioridade baixa */
 
 .header-tarefa {
   display: flex;
