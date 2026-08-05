@@ -273,3 +273,64 @@ ul#listaTarefas li:hover {
   padding: 24px;
   font-style: italic;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.dashboard-graficos {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+}
+
+.card-grafico {
+  flex: 1;
+  min-width: 300px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card-grafico h3 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 15px;
+  color: #2d3748;
+}
+
+.chart-container {
+  position: relative;
+  width: 100%;
+  height: 220px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

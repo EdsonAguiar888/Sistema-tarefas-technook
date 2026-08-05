@@ -6,10 +6,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TarefaService, Tarefa } from '../tarefa.service';
 
+import { BaseChartDirective } from 'ng2-charts';
+import { ChartConfiguration, ChartData, ChartEvent } from 'chart.js';
+
+
 @Component({
   selector: 'app-tarefa-gerenciador',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, BaseChartDirective],
   templateUrl: './tarefa-lista.html',
   styleUrl: './tarefa-lista.css'
 })
@@ -33,6 +37,53 @@ export class TarefaListaComponent implements OnInit {
     status: 'ABERTA'
   };
 
+
+
+
+  // --- CONFIGURAÇÃO DO GRÁFICO DE DISCO (STATUS) ---
+  doughnutChartOptions: ChartConfiguration<'doughnut'>['options'] = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top' }
+    }
+  };
+
+  doughnutChartData: ChartData<'doughnut'> = {
+    labels: ['ABERTA', 'EM_ANDAMENTO', 'CONCLUIDA'],
+    datasets: [
+      {
+        data: [0, 0, 0],
+        backgroundColor: ['#e74c3c', '#f1c40f', '#2ecc71'] // Vermelho, Amarelo, Verde
+      }
+    ]
+  };
+
+  // --- CONFIGURAÇÃO DO GRÁFICO DE BARRAS (PRIORIDADE) ---
+  barChartOptions: ChartConfiguration<'bar'>['options'] = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false }
+    }
+  };
+
+  barChartData: ChartData<'bar'> = {
+    labels: ['Baixa', 'Média', 'Alta'],
+    datasets: [
+      {
+        data: [0, 0, 0],
+        backgroundColor: ['#3498db', '#e67e22', '#9b59b6']
+      }
+    ]
+  };
+
+
+
+
+
+
+
   ngOnInit(): void {
     this.carregarTarefas();
   }
@@ -42,11 +93,106 @@ export class TarefaListaComponent implements OnInit {
       next: (dados) => {
         console.log('Tarefas recebidas da API:', dados);
         this.tarefas = dados;
+
+        
+        this.atualizarDadosGraficos();
+
+
         this.cd.detectChanges(); // 3. Força a atualização da tela
       },
       error: (err) => console.error('Erro na requisição GET /tarefas:', err)
     });
   }
+
+
+
+
+
+
+
+
+// Processa a contagem de tarefas e atualiza os datasets dos gráficos
+  atualizarDadosGraficos(): void {
+    const statusCounts = { ABERTA: 0, EM_ANDAMENTO: 0, CONCLUIDA: 0 };
+    const prioridadeCounts = { baixa: 0, media: 0, alta: 0 };
+
+    this.tarefas.forEach(t => {
+      if (t.status in statusCounts) statusCounts[t.status as keyof typeof statusCounts]++;
+      if (t.prioridade in prioridadeCounts) prioridadeCounts[t.prioridade as keyof typeof prioridadeCounts]++;
+    });
+
+    // Atualiza o gráfico de Rosca/Disco
+    this.doughnutChartData = {
+      ...this.doughnutChartData,
+      datasets: [{ ...this.doughnutChartData.datasets[0], data: [statusCounts.ABERTA, statusCounts.EM_ANDAMENTO, statusCounts.CONCLUIDA] }]
+    };
+
+    // Atualiza o gráfico de Barras
+    this.barChartData = {
+      ...this.barChartData,
+      datasets: [{ ...this.barChartData.datasets[0], data: [prioridadeCounts.baixa, prioridadeCounts.media, prioridadeCounts.alta] }]
+    };
+  }
+
+  // --- EVENTOS DE CLIQUE INTERATIVOS ---
+  aoClicarStatus(event: { event?: ChartEvent; active?: object[] }): void {
+    if (event.active && event.active.length > 0) {
+      const activeElement = event.active[0] as { index: number };
+      const statusSelecionado = this.doughnutChartData.labels?.[activeElement.index] as string;
+      
+      console.log('Status clicado no gráfico:', statusSelecionado);
+      this.filtroStatus = statusSelecionado;
+      this.carregarTarefas();
+    }
+  }
+
+  aoClicarPrioridade(event: { event?: ChartEvent; active?: object[] }): void {
+    if (event.active && event.active.length > 0) {
+      const activeElement = event.active[0] as { index: number };
+      const prioridadeSelecionada = (this.barChartData.labels?.[activeElement.index] as string).toLowerCase();
+
+      console.log('Prioridade clicada no gráfico:', prioridadeSelecionada);
+      this.filtroPrioridade = prioridadeSelecionada;
+      this.carregarTarefas();
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   buscarPorId(): void {
     const id = this.buscaId.trim();

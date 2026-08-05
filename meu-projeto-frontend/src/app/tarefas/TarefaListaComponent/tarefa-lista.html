@@ -119,4 +119,63 @@
       }
     </div>
   </section>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="dashboard-graficos">
+  
+  <!-- GRÁFICO DE DISCO (STATUS) -->
+  <div class="card-grafico">
+    <h3>Tarefas por Status</h3>
+    <div class="chart-container">
+      <canvas baseChart
+        [data]="doughnutChartData"
+        [options]="doughnutChartOptions"
+        [type]="'doughnut'"
+        (chartClick)="aoClicarStatus($event)">
+      </canvas>
+    </div>
+  </div>
+
+  <!-- GRÁFICO DE BARRAS (PRIORIDADE) -->
+  <div class="card-grafico">
+    <h3>Tarefas por Prioridade</h3>
+    <div class="chart-container">
+      <canvas baseChart
+        [data]="barChartData"
+        [options]="barChartOptions"
+        [type]="'bar'"
+        (chartClick)="aoClicarPrioridade($event)">
+      </canvas>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </div>

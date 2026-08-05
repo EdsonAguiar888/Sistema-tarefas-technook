@@ -12,8 +12,8 @@ export class TarefasService {
 
         {
             id: "1",
-            titulo: "top",
-            descricao: "ok",
+            titulo: "Teste",
+            descricao: "Teste",
             prioridade: "alta",
             status: StatusTarefa.CONCLUIDA
         }
