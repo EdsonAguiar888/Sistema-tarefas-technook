@@ -1,6 +1,6 @@
 
 
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { StatusTarefa, Tarefa } from './tarefa.interface';
 import { v4 as uuidv4 } from 'uuid';
 import { ok } from 'assert';
@@ -51,7 +51,7 @@ export class TarefasService {
     }
 
 
-    criar(titulo: string, descricao: string, prioridade: string,status: string): Tarefa {
+    criar(titulo: string, descricao: string, prioridade: string, status: string): Tarefa {
 
         const tarefa: Tarefa = {
             id: uuidv4(),
@@ -69,6 +69,31 @@ export class TarefasService {
     deletar(id: string): void {
         this.tarefas = this.tarefas.filter(t => t.id !== id);
     }
+
+
+    atualizar(id: string, dadosAtualizados: Partial<Tarefa>): Tarefa {
+        // 1. Procura a posição da tarefa no array pelo ID
+        const index = this.tarefas.findIndex((t) => t.id === id);
+
+        // 2. Se a tarefa não existir, dispara um erro HTTP 404 (Not Found)
+        if (index === -1) {
+            throw new NotFoundException(`Tarefa com o ID ${id} não encontrada.`);
+        }
+
+        // 3. Mescla os dados antigos com os novos dados recebidos
+        this.tarefas[index] = {
+            ...this.tarefas[index],
+            ...dadosAtualizados,
+            // Garante a conversão do enum caso o status venha como string
+            status: dadosAtualizados.status
+                ? (dadosAtualizados.status as StatusTarefa)
+                : this.tarefas[index].status,
+        };
+
+        // 4. Retorna a tarefa atualizada
+        return this.tarefas[index];
+    }
+
 
 
 

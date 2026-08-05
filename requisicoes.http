@@ -29,8 +29,8 @@ Content-Type: application/json
 
 {
 
-    "titulo": "jjjjjjjjjjjjjj",
-    "descricao": "jogar bola ",
+    "titulo": "Testando",
+    "descricao": "testando ",
     "prioridade": "ALTA",
     "status": "EM_ANDAMENTO"
 }
@@ -39,5 +39,30 @@ Content-Type: application/json
 
 ### Deletar uma tarefa
 DELETE http://localhost:3000/tarefas/70a794ee-f23f-40b1-9530-052fd8d55ed0
+
+###
+
+
+
+### Atualizar uma tarefa existente (Campos completos)
+PUT http://localhost:3000/tarefas/9c598eb1-bed9-4945-aa82-7d83a6366252
+Content-Type: application/json
+
+{
+    "titulo": "Estudar NestJS e Angular",
+    "descricao": "Praticar integração com gráficos e CRUD de tarefas",
+    "prioridade": "media",
+    "status": "ABERTA"
+}
+
+###
+
+### Atualizar apenas o status de uma tarefa (Atualização parcial)
+PUT http://localhost:3000/tarefas/70a794ee-f23f-40b1-9530-052fd8d55ed0
+Content-Type: application/json
+
+{
+    "status": "EM_ANDAMENTO"
+}
 
 ###

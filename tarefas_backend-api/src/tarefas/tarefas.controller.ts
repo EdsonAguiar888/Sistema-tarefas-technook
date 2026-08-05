@@ -1,9 +1,10 @@
 
 
 
-import { Controller, Get, Post, Delete, Param, Body, Query } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, Query } from '@nestjs/common';
 import { TarefasService } from './tarefas.service';
 import { StatusTarefa, Tarefa } from './tarefa.interface';
+
 
 
 @Controller('tarefas')
@@ -51,4 +52,14 @@ export class TarefasController {
   deletar(@Param('id') id: string) {
     this.tarefasService.deletar(id);
   }
+
+  @Put(':id')
+  atualizar(
+    @Param('id') id: string,
+    @Body() body: { titulo?: string; descricao?: string; prioridade?: string; status?: StatusTarefa }
+  ) {
+    return this.tarefasService.atualizar(id, body);
+  }
+
+
 }
