@@ -1,13 +1,15 @@
 
 // src/app/tarefas/tarefa-lista/tarefa-lista.ts
 
-import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TarefaService, Tarefa } from '../tarefa.service';
 
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartData, ChartEvent } from 'chart.js';
+
+
 
 
 @Component({
@@ -20,15 +22,12 @@ import { ChartConfiguration, ChartData, ChartEvent } from 'chart.js';
 export class TarefaListaComponent implements OnInit {
   private tarefaService = inject(TarefaService);
   private cd = inject(ChangeDetectorRef); // 2. Injete aqui
-
+  private zone = inject(NgZone);
 
 
   tarefas: Tarefa[] = [];
   tarefaDetalhes?: Tarefa;
 
-  filtroStatus = '';
-  filtroPrioridade = '';
-  buscaId = '';
 
   novaTarefa: Tarefa = {
     titulo: '',
@@ -37,10 +36,79 @@ export class TarefaListaComponent implements OnInit {
     status: 'ABERTA'
   };
 
+  filtroStatus = '';
+  filtroPrioridade = '';
+  buscaId = '';
+
+  /////////////////////////////////////////////////////////////////////////////
+  ///////////// --- CONTROLE DO MODAL DE EDIÇÃO --- ///////////////////////////
+  /////////////////////////////////////////////////////////////////////////////
+
+  exibirModalEditar = false;
 
 
+  // Objeto isolado APENAS para o Modal de Edição
+  tarefaParaEditar: {
+    id: string;
+    titulo: string;
+    descricao: string;
+    status: 'ABERTA' | 'EM_ANDAMENTO' | 'CONCLUIDA';
+    prioridade: 'baixa' | 'media' | 'alta';
+  } = {
+      id: '',
+      titulo: '',
+      descricao: '',
+      status: 'ABERTA',
+      prioridade: 'baixa'
+    };
 
-  // --- CONFIGURAÇÃO DO GRÁFICO DE DISCO (STATUS) ---
+  // 1. Abre o Modal e copia a tarefa para o objeto do modal
+  abrirModalEdicao(tarefa: Tarefa): void {
+
+    if (!tarefa.id) {
+      console.error('Tarefa sem id não pode ser editada.');
+      return;
+
+    }
+
+    this.tarefaParaEditar = {
+      id: tarefa.id,
+      titulo: tarefa.titulo,
+      descricao: tarefa.descricao,
+      status: tarefa.status as 'ABERTA' | 'EM_ANDAMENTO' | 'CONCLUIDA',
+      prioridade: tarefa.prioridade as 'baixa' | 'media' | 'alta'
+    };
+    this.exibirModalEditar = true;
+    this.cd.detectChanges();
+  }
+
+  // 2. Fecha o Modal sem alterar nada
+  fecharModalEdicao(): void {
+    this.exibirModalEditar = false;
+  }
+
+  // 3. Envia os dados do Modal para a API NestJS via PUT
+  salvarEdicaoModal(): void {
+    const { id, ...dadosAtualizados } = this.tarefaParaEditar;
+
+    this.tarefaService.atualizar(id, dadosAtualizados).subscribe({
+      next: () => {
+
+        this.zone.run(() => {
+          this.exibirModalEditar = false;
+          this.fecharModalEdicao();
+          this.carregarTarefas(); // Recarrega a lista e atualiza os gráficos!
+        });
+      },
+      error: (err) => console.error('Erro ao atualizar tarefa pelo modal:', err)
+    });
+  }
+
+
+  /////////////////////////////////////////////////////////////////////////////
+  /////////// --- CONFIGURAÇÃO DO GRÁFICO DE DISCO (STATUS) --- ///////////////
+  /////////////////////////////////////////////////////////////////////////////
+
   doughnutChartOptions: ChartConfiguration<'doughnut'>['options'] = {
     responsive: true,
     maintainAspectRatio: false,
@@ -59,7 +127,11 @@ export class TarefaListaComponent implements OnInit {
     ]
   };
 
-  // --- CONFIGURAÇÃO DO GRÁFICO DE BARRAS (PRIORIDADE) ---
+
+  /////////////////////////////////////////////////////////////////////////////
+  /////////// --- CONFIGURAÇÃO DO GRÁFICO DE BARRAS (PRIORIDADE) --- //////////
+  /////////////////////////////////////////////////////////////////////////////
+
   barChartOptions: ChartConfiguration<'bar'>['options'] = {
     responsive: true,
     maintainAspectRatio: false,
@@ -81,9 +153,6 @@ export class TarefaListaComponent implements OnInit {
 
 
 
-
-
-
   ngOnInit(): void {
     this.carregarTarefas();
   }
@@ -94,7 +163,7 @@ export class TarefaListaComponent implements OnInit {
         console.log('Tarefas recebidas da API:', dados);
         this.tarefas = dados;
 
-        
+
         this.atualizarDadosGraficos();
 
 
@@ -107,11 +176,10 @@ export class TarefaListaComponent implements OnInit {
 
 
 
+  ////////////////////////////////////////////////////////////////////////////////////
+  /// --- Processa a contagem de tarefas e atualiza os datasets dos gráficos --- ////
+  //////////////////////////////////////////////////////////////////////////////////
 
-
-
-
-// Processa a contagem de tarefas e atualiza os datasets dos gráficos
   atualizarDadosGraficos(): void {
     const statusCounts = { ABERTA: 0, EM_ANDAMENTO: 0, CONCLUIDA: 0 };
     const prioridadeCounts = { baixa: 0, media: 0, alta: 0 };
@@ -134,12 +202,16 @@ export class TarefaListaComponent implements OnInit {
     };
   }
 
-  // --- EVENTOS DE CLIQUE INTERATIVOS ---
+
+  /////////////////////////////////////////////////////////////////////////////
+  ////////////////// --- EVENTOS DE CLIQUE INTERATIVOS --- ////////////////////
+  /////////////////////////////////////////////////////////////////////////////
+
   aoClicarStatus(event: { event?: ChartEvent; active?: object[] }): void {
     if (event.active && event.active.length > 0) {
       const activeElement = event.active[0] as { index: number };
       const statusSelecionado = this.doughnutChartData.labels?.[activeElement.index] as string;
-      
+
       console.log('Status clicado no gráfico:', statusSelecionado);
       this.filtroStatus = statusSelecionado;
       this.carregarTarefas();

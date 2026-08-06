@@ -4,9 +4,10 @@
   <!-- 1. FORMULÁRIO DE CRIAÇÃO -->
   <section class="card-form">
     <h3>Criar Nova Tarefa</h3>
+   
 
     <!-- Use (ngSubmit) no elemento <form> -->
-    <form (ngSubmit)="cadastrarTarefa()">
+    <form #formRef="ngForm" (ngSubmit)="cadastrarTarefa()">
 
       <div class="form-group">
         <label>Título:</label>
@@ -19,7 +20,7 @@
       </div>
 
       <div class="form-row">
-        
+
         <div class="form-group">
           <label>Status:</label>
           <select name="status" [(ngModel)]="novaTarefa.status">
@@ -28,7 +29,7 @@
             <option value="CONCLUIDA">Concluída</option>
           </select>
         </div>
-        
+
         <div class="form-group">
           <label>Prioridade:</label>
           <select name="prioridade" [(ngModel)]="novaTarefa.prioridade">
@@ -41,7 +42,9 @@
 
       </div>
 
-      <button type="submit" class="btn-primary">Criar Tarefa</button>
+      <button type="submit" class="btn-salvar">Criar Tarefa</button>
+
+   
     </form>
   </section>
 
@@ -101,11 +104,19 @@
 
     <div class="grid-tarefas">
       @for (tarefa of tarefas; track tarefa.id) {
+      
+    <div class="card">
+     
+       </div>
+    
+      
       <div class="card-tarefa" [class]="tarefa.prioridade">
+
+        
         <div class="header-tarefa">
-          <h4>{{ tarefa.titulo }}</h4>
-          <button class="btn-deletar" (click)="excluirTarefa(tarefa.id)">🗑️ Excluir</button>
-        </div>
+          <h4>{{ tarefa.titulo }}</h4>          
+        </div>        
+        
         <p>{{ tarefa.descricao }}</p>
 
         <div class="footer-tarefa">
@@ -113,7 +124,18 @@
           <span class="badge prioridade">Prioridade: {{ tarefa.prioridade }}</span>
         </div>
         <small class="id-texto">ID: {{ tarefa.id }}</small>
+      
+        
+      <div class="header-btn">
       </div>
+          
+          <button class=" btn-editar" (click)="abrirModalEdicao(tarefa)">✏️ Editar</button>
+          <button class="btn-deletar" (click)="excluirTarefa(tarefa.id)">🗑️ Excluir</button>
+
+</div>
+      
+      
+
       } @empty {
       <p class="sem-tarefas">Nenhuma tarefa encontrada.</p>
       }
@@ -131,32 +153,32 @@
 
 
 
-<div class="dashboard-graficos">
-  
-  <!-- GRÁFICO DE DISCO (STATUS) -->
-  <div class="card-grafico">
-    <h3>Tarefas por Status</h3>
-    <div class="chart-container">
-      <canvas baseChart
-        [data]="doughnutChartData"
-        [options]="doughnutChartOptions"
-        [type]="'doughnut'"
-        (chartClick)="aoClicarStatus($event)">
-      </canvas>
-    </div>
-  </div>
 
-  <!-- GRÁFICO DE BARRAS (PRIORIDADE) -->
-  <div class="card-grafico">
-    <h3>Tarefas por Prioridade</h3>
-    <div class="chart-container">
-      <canvas baseChart
-        [data]="barChartData"
-        [options]="barChartOptions"
-        [type]="'bar'"
-        (chartClick)="aoClicarPrioridade($event)">
-      </canvas>
+
+
+
+  <div class="dashboard-graficos">
+
+    <!-- GRÁFICO DE DISCO (STATUS) -->
+    <div class="card-grafico">
+      <h3>Tarefas por Status</h3>
+      <div class="chart-container">
+        <canvas baseChart [data]="doughnutChartData" [options]="doughnutChartOptions" [type]="'doughnut'"
+          (chartClick)="aoClicarStatus($event)">
+        </canvas>
+      </div>
     </div>
+
+    <!-- GRÁFICO DE BARRAS (PRIORIDADE) -->
+    <div class="card-grafico">
+      <h3>Tarefas por Prioridade</h3>
+      <div class="chart-container">
+        <canvas baseChart [data]="barChartData" [options]="barChartOptions" [type]="'bar'"
+          (chartClick)="aoClicarPrioridade($event)">
+        </canvas>
+      </div>
+    </div>
+
   </div>
 
 </div>
@@ -167,15 +189,55 @@
 
 
 
+<!-- ============================================================== -->
+<!-- ESTRUTURA DO MODAL DE EDIÇÃO -->
+<!-- ============================================================== -->
+@if (exibirModalEditar) {
+  <div class="modal-overlay" (click)="fecharModalEdicao()">
+    <!-- (click.stop) impede que clicar dentro da caixa feche o modal -->
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Editar Tarefa</h3>
+        <button type="button" class="btn-fechar" (click)="fecharModalEdicao()">&times;</button>
+      </div>
 
+      <form (ngSubmit)="salvarEdicaoModal()">
+        <div class="form-group">
+          <label>Título:</label>
+          <input type="text" name="modalTitulo" [(ngModel)]="tarefaParaEditar.titulo" required />
+        </div>
 
+        <div class="form-group">
+          <label>Descrição:</label>
 
+          <input type="text" name="modalDescricao" [(ngModel)]="tarefaParaEditar.descricao" />
+        </div>
 
+        <div class="form-row">
+          <div class="form-group">
+            <label>Status:</label>
+            <select name="modalStatus" [(ngModel)]="tarefaParaEditar.status">
+              <option value="ABERTA">Aberta</option>
+              <option value="EM_ANDAMENTO">Em Andamento</option>
+              <option value="CONCLUIDA">Concluída</option>
+            </select>
+          </div>
 
+          <div class="form-group">
+            <label>Prioridade:</label>
+            <select name="modalPrioridade" [(ngModel)]="tarefaParaEditar.prioridade">
+              <option value="baixa">Baixa</option>
+              <option value="media">Média</option>
+              <option value="alta">Alta</option>
+            </select>
+          </div>
+        </div>
 
-
-
-
-
-
-</div>
+        <div class="modal-actions">
+          <button type="button" class="btn-cancelar" (click)="fecharModalEdicao()">Cancelar</button>
+          <button type="submit" class="btn-salvar">Salvar Alterações</button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

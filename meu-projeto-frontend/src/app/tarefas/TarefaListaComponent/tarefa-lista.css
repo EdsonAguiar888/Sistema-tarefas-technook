@@ -153,13 +153,42 @@ button[type="submit"]:hover {
   color: #dc2626;
   border: 1px solid #fecaca;
   padding: 6px 12px;
-  font-size: 0.825rem;
+  font-size: 0.9rem;
+
+    position: relative;
+    left: 630px;
+    bottom: 40px;
+    width: 100px;
+    height: 40px;
 }
 
 .btn-deletar:hover {
   background-color: #dc2626;
   color: #ffffff;
   border-color: #dc2626;
+}
+/* Botão editar /  (amarelo Suave) */
+.btn-editar {
+  background-color: #fef2f2;
+  color: #131109;
+  border: 1px solid #fecaca;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+
+    position: relative;
+    left: 630px;
+    bottom: 80px;
+    width: 100px;
+    height: 40px;
+}
+
+.btn-editar:hover {
+  background-color: #f5ce4d;
+  color: #131010;
+  border-color: #f08e0e;
+
+  
+
 }
 
 /* ==========================================================================
@@ -174,7 +203,19 @@ ul#listaTarefas {
   list-style: none;
 }
 
+
+
+
 /* Estilo Individual dos Itens de Tarefa */
+
+.card{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+
 .card-tarefa,
 ul#listaTarefas li {
   background-color: #ffffff;
@@ -319,6 +360,105 @@ ul#listaTarefas li:hover {
   position: relative;
   width: 100%;
   height: 220px;
+}
+
+
+
+
+
+
+
+:modal
+
+/* Fundo escuro transparente cobrindo a tela toda */
+.modal-overlay {
+
+
+  
+
+
+  /*position: fixed;  Garante que fique fixo em relação à janela do navegador */
+  /* top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh; */
+  background-color: rgba(0, 0, 0, 0.65); /* Fundo semitransparente escuro */
+  backdrop-filter: blur(4px); /* Efeito de desfoque suave no fundo da página */
+  
+  display: flex;
+  align-items: center;     /* Centraliza o pop-up verticalmente */
+  justify-content: center;  /* Centraliza o pop-up horizontalmente */
+  
+           /* Garante que fique por cima de tudo (incluindo gráficos) */
+  animation: fadeIn 0.2s ease-out; /* Animação de entrada suave */
+
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+}
+
+/* Caixa central do Modal */
+.modal-content {
+  background: #ffffff;
+  padding: 28px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 480px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+  /* Garante scroll interno se a tela do celular/dispositivo for muito pequena */
+  max-height: 90vh;
+  overflow-y: auto;  
+  /*animation: scaleUp 0.0s ease-out;  Efeito visual de abertura do pop-up */
+
+
+    /* Centraliza o modal no centro da tela independente de onde estiver no scroll */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 10px;
+}
+
+.modal-header h3 {
+  margin: 0;
+  color: #2d3748;
+}
+
+
+
+.btn-fechar {
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #a0aec0;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+/* 3. ANIMAÇÕES VISUAIS (OPCIONAL, DÁ UM TOQUE PROFISSIONAL) */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
 }
 
 

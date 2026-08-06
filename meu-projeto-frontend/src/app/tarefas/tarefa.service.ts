@@ -42,4 +42,9 @@ export class TarefaService {
   deletar(id: string): Observable<void> {
     return this.http.delete<void>(`${this.API_URL}/${id}`);
   }
+
+  // Atualizar tarefa (PUT /tarefas/:id)
+atualizar(id: string, tarefa: Partial<Tarefa>): Observable<Tarefa> {
+  return this.http.put<Tarefa>(`${this.API_URL}/${id}`, tarefa);
+}
 }
