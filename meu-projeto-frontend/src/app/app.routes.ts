@@ -6,7 +6,6 @@ import { GraficosApexComponent } from './tarefas/graficos-apex/graficos-apex';
 export const routes: Routes = [
   
   { path: '', component: TarefaListaComponent },
-
   { path: 'graficos', component: GraficosApexComponent },
   { path: '**', redirectTo: '' }
   

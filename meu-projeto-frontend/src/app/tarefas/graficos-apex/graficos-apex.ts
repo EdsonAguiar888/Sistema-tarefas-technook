@@ -81,13 +81,13 @@ export class GraficosApexComponent implements AfterViewInit {
         data: [baixa, media, alta]
       }],
       chart: {
-        type: 'bar',
+        type: 'bar',        
         height: 320
       },
       xaxis: {
         categories: ['Baixa', 'Média', 'Alta']
       },
-      colors: ['#3498db'],
+      colors: ['#189c39'],
       title: {
         text: 'Tarefas por Prioridade',
         align: 'left'
