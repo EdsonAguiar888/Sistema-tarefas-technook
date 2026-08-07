@@ -8,14 +8,15 @@ import { TarefaService, Tarefa } from '../tarefa.service';
 
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartData, ChartEvent } from 'chart.js';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 
 
 
 @Component({
-  selector: 'app-tarefa-gerenciador',
+  selector: 'app-tarefa-lista',
   standalone: true,
-  imports: [CommonModule, FormsModule, BaseChartDirective],
+  imports: [CommonModule, FormsModule, BaseChartDirective, RouterLink, RouterLinkActive],
   templateUrl: './tarefa-lista.html',
   styleUrl: './tarefa-lista.css'
 })

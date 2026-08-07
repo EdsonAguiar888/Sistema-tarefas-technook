@@ -1,18 +1,23 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-// import { TarefaGerenciadorComponent } from './tarefas/TarefaListaComponent/tarefa-gerenciador';
+import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { TarefaListaComponent } from './tarefas/TarefaListaComponent/tarefa-lista';
+
+// 1. Importe RouterLink e RouterLinkActive
 
 
 @Component({
   selector: 'app-root',
   imports:
     [
-      TarefaListaComponent,
+      // TarefaListaComponent,
       RouterOutlet,
-      // TarefaGerenciadorComponent
+      RouterLink, 
+      RouterLinkActive
+      
     ],
-  template: '<router-outlet></router-outlet>',
+  // template: '<router-outlet></router-outlet>',
+  templateUrl: './app.html',
+
   styleUrl: './app.css'
 })
 export class App {
