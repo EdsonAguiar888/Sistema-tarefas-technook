@@ -1,20 +1,41 @@
-# 1. Imagem base: Baixa o Node.js oficial na versão 20 em uma versão Linux leve (alpine)
+# -----------------------------------------------------------------------------
+# LINHA 1: Baixa um sistema Linux leve (Alpine) com o Node.js v20 pré-instalado.
+# Isso garante que a aplicação rode na mesma versão do Node em qualquer computador.
+# -----------------------------------------------------------------------------
 FROM node:20-alpine
 
-# 2. Diretório de trabalho: Cria e entra na pasta /app dentro do container
+# -----------------------------------------------------------------------------
+# LINHA 2: Cria a pasta '/app' dentro do container e entra nela.
+# Tudo o que executarmos a partir de agora acontecerá dentro dessa pasta.
+# -----------------------------------------------------------------------------
 WORKDIR /app
 
-# 3. Copia os arquivos de dependências para dentro da pasta /app
+# -----------------------------------------------------------------------------
+# LINHA 3: Copia os arquivos package.json e package-lock.json da sua máquina
+# para a pasta /app dentro do container.
+# -----------------------------------------------------------------------------
 COPY package*.json ./
 
-# 4. Instala todas as dependências declaradas no package.json
-RUN npm install
+# -----------------------------------------------------------------------------
+# LINHA 4: Baixa e instala todas as bibliotecas e pacotes do seu Angular
+# dentro do container. A flag --legacy-peer-deps previne erros de versão.
+# -----------------------------------------------------------------------------
+RUN npm install --legacy-peer-deps
 
-# 5. Copia todo o resto do código da sua máquina para dentro do container
+# -----------------------------------------------------------------------------
+# LINHA 5: Copia todo o código-fonte do projeto (como a pasta src/ e app.ts)
+# para dentro da pasta /app do container.
+# -----------------------------------------------------------------------------
 COPY . .
 
-# 6. Porta: Informa que o container vai responder na porta 4200 (padrão do Angular)
+# -----------------------------------------------------------------------------
+# LINHA 6: Avisa que o container escutará requisições na porta 4200.
+# -----------------------------------------------------------------------------
 EXPOSE 4200
 
-# 7. Comando de execução: O que o container executa quando for iniciado
+# -----------------------------------------------------------------------------
+# LINHA 7: O comando que inicializa o servidor de desenvolvimento do Angular.
+# A flag '--host 0.0.0.0' libera o acesso para o seu navegador fora do container.
+# -----------------------------------------------------------------------------
 CMD ["npx", "ng", "serve", "--host", "0.0.0.0"]
+
