@@ -1,4 +1,26 @@
+
 services:
+  # =============================================================================
+  # BANCO DE DADOS: MySQL
+  # =============================================================================
+  mysqldb:
+    image: mysql:8.0                     # Usa a imagem oficial do MySQL
+    container_name: container_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root          # Senha do usuário root
+      MYSQL_DATABASE: technook_db         # Nome do banco que será criado automaticamente
+    ports:
+      - "3306:3306"                      # Mapeia a porta do MySQL no seu computador
+    volumes:
+      - mysql_data:/var/lib/mysql        # Persiste os dados mesmo se o container for destruído
+    networks:
+      - rede_aplicacao
+
+
+
+  # =============================================================================
+  # Backend
+  # =============================================================================
   backend:
     build:
       context: ./tarefas_backend-api   # <-- Garanta que o nome da pasta seja EXATAMENTE o que está no seu Linux
@@ -9,6 +31,11 @@ services:
     networks:
       - rede_aplicacao
 
+
+
+  # =============================================================================
+  # Frontend
+  # =============================================================================
   frontend:
     build:
       context: ./meu-projeto-frontend  # <-- Garanta o nome exato da pasta do frontend
@@ -24,3 +51,7 @@ services:
 networks:
   rede_aplicacao:
     driver: bridge
+
+
+volumes:
+  mysql_data:                             # Garante que os registros do banco não sejam apagados ao desligar o Docker
