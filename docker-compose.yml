@@ -1,0 +1,26 @@
+services:
+  backend:
+    build:
+      context: ./tarefas_backend-api   # <-- Garanta que o nome da pasta seja EXATAMENTE o que está no seu Linux
+      dockerfile: Dockerfile
+    container_name: container_backend
+    ports:
+      - "3000:3000"
+    networks:
+      - rede_aplicacao
+
+  frontend:
+    build:
+      context: ./meu-projeto-frontend  # <-- Garanta o nome exato da pasta do frontend
+      dockerfile: Dockerfile
+    container_name: container_angular
+    ports:
+      - "4200:4200"
+    depends_on:
+      - backend
+    networks:
+      - rede_aplicacao
+
+networks:
+  rede_aplicacao:
+    driver: bridge
