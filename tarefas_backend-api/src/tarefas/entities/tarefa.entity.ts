@@ -4,6 +4,7 @@ import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity('tarefas')
 export class TarefaEntity {
+  // @PrimaryGeneratedColumn()
   @PrimaryGeneratedColumn('uuid')
   id?: string;
 
@@ -15,4 +16,7 @@ export class TarefaEntity {
 
   @Column({ default: 'ABERTA' })
   status?: string;
+
+  @Column({ default: 'baixa' }) 
+  prioridade?: string;
 }

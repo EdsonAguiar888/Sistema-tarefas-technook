@@ -6,7 +6,6 @@ export interface Tarefa {
     titulo: string;
     descricao: string;
     status: StatusTarefa;
-
     prioridade: string;
 }
 

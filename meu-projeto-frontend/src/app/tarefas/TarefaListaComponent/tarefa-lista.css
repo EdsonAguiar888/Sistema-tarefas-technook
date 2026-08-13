@@ -155,11 +155,11 @@ button[type="submit"]:hover {
   padding: 6px 12px;
   font-size: 0.9rem;
 
-    position: relative;
-    left: 630px;
-    bottom: 40px;
-    width: 100px;
-    height: 40px;
+  /* position: relative; */
+  left: 630px;
+  bottom: 40px;
+  width: 100px;
+  height: 40px;
 }
 
 .btn-deletar:hover {
@@ -167,6 +167,7 @@ button[type="submit"]:hover {
   color: #ffffff;
   border-color: #dc2626;
 }
+
 /* Botão editar /  (amarelo Suave) */
 .btn-editar {
   background-color: #fef2f2;
@@ -175,11 +176,11 @@ button[type="submit"]:hover {
   padding: 6px 12px;
   font-size: 0.9rem;
 
-    position: relative;
-    left: 630px;
-    bottom: 80px;
-    width: 100px;
-    height: 40px;
+  /* position: relative; */
+  left: 630px;
+  bottom: 80px;
+  width: 100px;
+  height: 40px;
 }
 
 .btn-editar:hover {
@@ -187,9 +188,15 @@ button[type="submit"]:hover {
   color: #131010;
   border-color: #f08e0e;
 
-  
-
 }
+
+.header-btn {
+  display: flex;
+  gap: 22px;
+  flex-direction: column;
+  padding: 18px;
+}
+
 
 /* ==========================================================================
    LISTAGEM DE TAREFAS & CARDS DINÂMICOS
@@ -208,12 +215,14 @@ ul#listaTarefas {
 
 /* Estilo Individual dos Itens de Tarefa */
 
-.card{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
 }
+
+
 
 
 .card-tarefa,
@@ -229,6 +238,7 @@ ul#listaTarefas li {
   gap: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
+  flex: 3;
 }
 
 .card-tarefa:hover,
@@ -250,6 +260,7 @@ ul#listaTarefas li:hover {
 /* Amarelo/Laranja para prioridade média */
 .card-tarefa.baixa {
   border-left-color: #10b981;
+
 }
 
 /* Verde para prioridade baixa */
@@ -317,18 +328,6 @@ ul#listaTarefas li:hover {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 .dashboard-graficos {
   display: flex;
   gap: 20px;
@@ -343,7 +342,7 @@ ul#listaTarefas li:hover {
   border: 1px solid #e2e8f0;
   border-radius: 8px;
   padding: 16px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -372,25 +371,21 @@ ul#listaTarefas li:hover {
 
 /* Fundo escuro transparente cobrindo a tela toda */
 .modal-overlay {
-
-
+  background-color: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
   
-
-
-  /*position: fixed;  Garante que fique fixo em relação à janela do navegador */
-  /* top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh; */
-  background-color: rgba(0, 0, 0, 0.65); /* Fundo semitransparente escuro */
-  backdrop-filter: blur(4px); /* Efeito de desfoque suave no fundo da página */
-  
+  /* Efeito de desfoque suave no fundo da página */
   display: flex;
-  align-items: center;     /* Centraliza o pop-up verticalmente */
-  justify-content: center;  /* Centraliza o pop-up horizontalmente */
+  align-items: center;
+
+  /* Centraliza o pop-up verticalmente */
+  justify-content: center;
   
-           /* Garante que fique por cima de tudo (incluindo gráficos) */
-  animation: fadeIn 0.2s ease-out; /* Animação de entrada suave */
+  /* Centraliza o pop-up horizontalmente */
+
+  /* Garante que fique por cima de tudo (incluindo gráficos) */
+  animation: fadeIn 0.2s ease-out;
+  /* Animação de entrada suave */
 
   z-index: 1000;
   backdrop-filter: blur(2px);
@@ -406,16 +401,16 @@ ul#listaTarefas li:hover {
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
   /* Garante scroll interno se a tela do celular/dispositivo for muito pequena */
   max-height: 90vh;
-  overflow-y: auto;  
+  overflow-y: auto;
   /*animation: scaleUp 0.0s ease-out;  Efeito visual de abertura do pop-up */
 
 
-    /* Centraliza o modal no centro da tela independente de onde estiver no scroll */
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    margin-right: -50%;
-    transform: translate(-50%, -50%);
+  /* Centraliza o modal no centro da tela independente de onde estiver no scroll */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
 
 }
 
@@ -452,25 +447,23 @@ ul#listaTarefas li:hover {
 
 /* 3. ANIMAÇÕES VISUAIS (OPCIONAL, DÁ UM TOQUE PROFISSIONAL) */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes scaleUp {
-  from { transform: scale(0.9); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

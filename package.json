@@ -1,8 +1,8 @@
 {
   "dependencies": {
     "apexcharts": "^6.8.0",
-    "mysql2": "^3.23.3",
     "ng-apexcharts": "^3.0.0",
+    "pg": "^8.23.0",
     "typeorm": "^1.1.0"
   }
 }
