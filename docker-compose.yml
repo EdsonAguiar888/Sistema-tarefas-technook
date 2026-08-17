@@ -1,22 +1,7 @@
 
 
 
-
-
-
-
-
 services:
-  postgres_db:
-    image: postgres:16-alpine
-    container_name: container_postgres
-    environment:
-      POSTGRES_USER: tecnook
-      POSTGRES_PASSWORD: "12345"
-      POSTGRES_DB: technook_db
-    ports:
-      - "5432:5432"
-
   backend:
     build: ./tarefas_backend-api
     container_name: container_backend
@@ -28,38 +13,8 @@ services:
       - DB_USER=tecnook
       - DB_PASS=12345
       - DB_NAME=technook_db
-    depends_on:
-      - postgres_db
-  # ==========================================
-  # SERVIÇO 1: BANCO DE DADOS (PostgreSQL)
-  # ==========================================
-  # postgres_db:
-  #   image: postgres:16-alpine             # Imagem leve e oficial do Postgres
-  #   container_name: container_postgres
-  #   environment:
-  #     POSTGRES_DB: technook_db            # Nome do banco
-  #     POSTGRES_USER: technook        # Usuário
-  #     POSTGRES_PASSWORD: 12345    # Senha
-  #   ports:
-  #     - "5432:5432"                       # Mapeia a porta 5432
-  #   volumes:
-  #     - postgres_data:/var/lib/postgresql/data
-  #   networks:
-  #     - rede_aplicacao
-
-  # backend:
-  #   build: ./tarefas_backend-api
-  #   container_name: container_backend
-  #   environment:
-  #     - DB_HOST=postgres_db  # <--- Nome do serviço do MySQL acima
-  #     - DB_PORT=5432
-  #     - DB_USERNAME=teste
-  #     - DB_PASSWORD=12345
-  #     - DB_DATABASE=technook_db
-  #   depends_on:
-  #     - postgres_db
-  #   ports:
-  #     - "3000:3000"
+    networks:
+      - rede_compartilhada
 
   angular:
     build: ./meu-projeto-frontend
@@ -68,93 +23,61 @@ services:
       - "4200:4200"
     depends_on:
       - backend
-
-
-# ==========================================
-# DEFINIÇÃO DE VOLUMES E REDES (Nível Raiz)
-# ==========================================
-volumes:
-  postgres_data:
+    networks:
+      - rede_compartilhada
 
 networks:
-  rede_aplicacao:
-    driver: bridge
-    
+  rede_compartilhada:
+    external: true
+
+
 
 
 
 
 # services:
-#   # =============================================================================
-#   # BANCO DE DADOS: MySQL
-#   # =============================================================================
-#   mysqldb:
-#     image: mysql:8.0                     # Usa a imagem oficial do MySQL
-#     container_name: container_mysql
-#     environment:
-#       MYSQL_ROOT_PASSWORD: root          # Senha do usuário root
-#       MYSQL_DATABASE: technook_db
-#       MYSQL_USER: teste
-#       MUSQL_PASSWORD: 12345         # Nome do banco que será criado automaticamente
-#     ports:
-#       - "3306:3306"                      # Mapeia a porta do MySQL no seu computador
-#     volumes:
-#       - mysql_data:/var/lib/mysql        # Persiste os dados mesmo se o container for destruído
-#     networks:
-#       - rede_aplicacao
-
-
-
-#   # =============================================================================
-#   # Backend
-#   # =============================================================================
-#   # backend:
-#   #   build:
-#   #     context: ./tarefas_backend-api   # <-- Garanta que o nome da pasta seja EXATAMENTE o que está no seu Linux
-#   #     dockerfile: Dockerfile
-#   #   container_name: container_backend
+#   # postgres_db:
+#   #   image: postgres:16-alpine
+#   #   container_name: container_postgres
+#   #   environment:
+#   #     POSTGRES_USER: tecnook
+#   #     POSTGRES_PASSWORD: "12345"
+#   #     POSTGRES_DB: technook_db
 #   #   ports:
-#   #     - "3000:3000"
-#   #   networks:
-#   #     - rede_aplicacao
+#   #     - "5432:5432"
 
-# backend:
-#     build: ./backend
+#   backend:
+#     build: ./tarefas_backend-api
 #     container_name: container_backend
-#     environment:
-#       - DB_HOST=mysql_db  # <--- Nome do serviço do MySQL acima
-#       - DB_PORT=3306
-#       - DB_USERNAME=technook_user
-#       - DB_PASSWORD=technook_pass
-#       - DB_DATABASE=technook_db
-#     depends_on:
-#       - mysql_db
 #     ports:
 #       - "3000:3000"
+#     environment:
+#       - DB_HOST=postgres_db
+#       - DB_PORT=5432
+#       - DB_USER=tecnook
+#       - DB_PASS=12345
+#       - DB_NAME=technook_db
+#     depends_on:
+#       - postgres_db
+    
+#     networks:
+#       - rede_compartilhada
 
-  
 
-
-
-#   # =============================================================================
-#   # Frontend
-#   # =============================================================================
-#   frontend:
-#     build:
-#       context: ./meu-projeto-frontend  # <-- Garanta o nome exato da pasta do frontend
-#       dockerfile: Dockerfile
+#   angular:
+#     build: ./meu-projeto-frontend
 #     container_name: container_angular
 #     ports:
 #       - "4200:4200"
 #     depends_on:
 #       - backend
+
+#     volumes:
+#       - postgres_data:
+
 #     networks:
-#       - rede_aplicacao
-
-# networks:
-#   rede_aplicacao:
-#     driver: bridge
+#       - rede_compartilhada
+    
 
 
-# volumes:
-#   mysql_data:                             # Garante que os registros do banco não sejam apagados ao desligar o Docker
+
