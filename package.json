@@ -1,8 +1,17 @@
 {
   "dependencies": {
+    "@nestjs/jwt": "^11.0.2",
+    "@nestjs/passport": "^11.0.5",
     "apexcharts": "^6.8.0",
+    "bcrypt": "^6.0.0",
     "ng-apexcharts": "^3.0.0",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
     "pg": "^8.23.0",
     "typeorm": "^1.1.0"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/passport-jwt": "^4.0.1"
   }
 }
