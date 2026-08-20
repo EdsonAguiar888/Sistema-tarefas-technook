@@ -2,10 +2,6 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
 
 
 
-
-
-
-
 @Entity('usuarios')
 export class UsuarioEntity {    
     
@@ -20,3 +16,4 @@ export class UsuarioEntity {
     
     
 }
+
