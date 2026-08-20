@@ -1,17 +1,3 @@
-# services:
-#   postgres_db:
-#     image: postgres:16-alpine
-#     container_name: container_postgres
-#     environment:
-#       POSTGRES_USER: tecnook
-#       POSTGRES_PASSWORD: "12345"
-#       POSTGRES_DB: technook_db
-#     ports:
-#       - "5432:5432"
-
-#     volumes:
-#       - postgres_data:/var/lib/postgresql/data
-
 
 
 services:
@@ -30,6 +16,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - rede_compartilhada
+    
 
 volumes:
   postgres_data:

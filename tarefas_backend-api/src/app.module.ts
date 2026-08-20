@@ -21,6 +21,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       database: process.env.DB_NAME || 'technook_db',
       entities: [__dirname + '/**/*.entity{.ts,.js}'], // Carrega todas as entidades automaticamente
       synchronize: true, // Em desenvolvimento, cria as tabelas automaticamente no banco!
+      logging: true,
     }),
     TarefasModule,
   ],

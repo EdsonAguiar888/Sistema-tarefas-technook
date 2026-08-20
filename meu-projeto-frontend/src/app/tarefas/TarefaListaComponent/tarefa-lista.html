@@ -48,7 +48,7 @@
     </form>
   </section>
 
-  <!-- 2. FILTROS E BUSCA POR ID -->
+  <!-- 2. FILTROS DE BUSCA E BUSCA POR ID -->
   <section class="card-filtros">
     <h3>Filtrar e Buscar</h3>
 
@@ -84,7 +84,7 @@
     </div>
 
     @if (tarefaDetalhes) {
-    <div class="resultado-id">
+    <div *ngIf="tarefaDetalhes" class="resultado-id">
       <div class="resultado-header">
         <h4>Resultado da Busca por ID:</h4>
         <button (click)="limparBuscaId()">Fechar</button>
@@ -192,7 +192,7 @@
   <div class="modal-content" (click)="$event.stopPropagation()">
     <div class="modal-header">
       <h3>Editar Tarefa</h3>
-      <button type="button" class="btn-fechar" (click)="fecharModalEdicao()">&times;</button>
+      <button type="button" class="btn-fechar" (click)="fecharModalEdicao()">&times</button>
     </div>
 
     <form (ngSubmit)="salvarEdicaoModal()">

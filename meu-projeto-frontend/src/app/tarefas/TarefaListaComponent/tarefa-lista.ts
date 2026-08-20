@@ -13,6 +13,7 @@ import { ChartConfiguration, ChartData, ChartEvent } from 'chart.js';
 
 
 
+
 @Component({
   selector: 'app-tarefa-lista',
   standalone: true,
@@ -25,6 +26,12 @@ export class TarefaListaComponent implements OnInit {
   private tarefaService = inject(TarefaService);
   private cd = inject(ChangeDetectorRef); // 2. Injete aqui
   private zone = inject(NgZone);
+
+
+  constructor(
+    private cdr: ChangeDetectorRef  //Declara e injeta o serviço ChangeDetectorRef na instância do componente com o nome de variável cdr
+  ) { }
+
 
 
   tarefas: Tarefa[] = [];
@@ -41,6 +48,9 @@ export class TarefaListaComponent implements OnInit {
   filtroStatus = '';
   filtroPrioridade = '';
   buscaId = '';
+
+
+
 
   /////////////////////////////////////////////////////////////////////////////
   ///////////// --- CONTROLE DO MODAL DE EDIÇÃO --- ///////////////////////////
@@ -124,7 +134,7 @@ export class TarefaListaComponent implements OnInit {
     datasets: [
       {
         data: [0, 0, 0],
-        backgroundColor: ['#e74c3c', '#f1c40f', '#2ecc71'] // Vermelho, Amarelo, Verde
+        backgroundColor: ['#2ecc71', '#f1c40f', '#e74c3c'] // Vermelho, Amarelo, Verde
       }
     ]
   };
@@ -265,7 +275,9 @@ export class TarefaListaComponent implements OnInit {
 
 
 
-
+  /////////////////////////////////////////////////////////////////////////////
+  ////////////////////////// --- Metodos --- //////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////
 
 
   buscarPorId(): void {
@@ -274,16 +286,18 @@ export class TarefaListaComponent implements OnInit {
       alert('Digite um ID para buscar!');
       return;
     }
-
-    console.log('Buscando ID:', id);
+    
     this.tarefaService.buscarPorId(id).subscribe({
-      next: (dados) => {
-        console.log('Resultado busca por ID:', dados);
+      next: (dados) => {        
         this.tarefaDetalhes = dados;
+        this.cdr.detectChanges(); //Força a atualização visual imediata no DOM/HTML
       },
+
       error: (err) => {
         console.error('Erro na requisição GET por ID:', err);
-        alert('Tarefa não encontrada com o ID informado!');
+        alert('Tarefa não encontrada com o ID informado! Tipo: ' + typeof id);
+
+        this.cdr.detectChanges(); //Força a atualização visual imediata no DOM/HTML
       }
     });
   }

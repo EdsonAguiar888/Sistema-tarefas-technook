@@ -6,7 +6,7 @@ GET http://localhost:3000/tarefas
 ###
 
 ### Buscar tarefa por ID
-GET http://localhost:3000/tarefas/
+GET http://localhost:3000/tarefas/http://localhost:3000/tarefas/b243e500-36d5-4e69-af0b-3ee42d038dc8
 
 ###
 

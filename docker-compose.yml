@@ -16,6 +16,9 @@ services:
     networks:
       - rede_compartilhada
 
+
+      
+
   angular:
     build: ./meu-projeto-frontend
     container_name: container_angular
@@ -29,55 +32,4 @@ services:
 networks:
   rede_compartilhada:
     external: true
-
-
-
-
-
-
-# services:
-#   # postgres_db:
-#   #   image: postgres:16-alpine
-#   #   container_name: container_postgres
-#   #   environment:
-#   #     POSTGRES_USER: tecnook
-#   #     POSTGRES_PASSWORD: "12345"
-#   #     POSTGRES_DB: technook_db
-#   #   ports:
-#   #     - "5432:5432"
-
-#   backend:
-#     build: ./tarefas_backend-api
-#     container_name: container_backend
-#     ports:
-#       - "3000:3000"
-#     environment:
-#       - DB_HOST=postgres_db
-#       - DB_PORT=5432
-#       - DB_USER=tecnook
-#       - DB_PASS=12345
-#       - DB_NAME=technook_db
-#     depends_on:
-#       - postgres_db
-    
-#     networks:
-#       - rede_compartilhada
-
-
-#   angular:
-#     build: ./meu-projeto-frontend
-#     container_name: container_angular
-#     ports:
-#       - "4200:4200"
-#     depends_on:
-#       - backend
-
-#     volumes:
-#       - postgres_data:
-
-#     networks:
-#       - rede_compartilhada
-    
-
-
 

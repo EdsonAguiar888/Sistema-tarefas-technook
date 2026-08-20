@@ -6,7 +6,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { ok } from 'assert';
 import { TarefaEntity } from './entities/tarefa.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
+import { promises } from 'dns';
 
 @Injectable()
 export class TarefasService {
@@ -23,6 +24,54 @@ export class TarefasService {
 
 
 
+
+
+
+
+
+  
+
+    async buscarPorStatus(status: StatusTarefa): Promise<TarefaEntity[]> {
+        return await this.tarefaRepository.find({
+            where: { status },
+        });
+    }
+
+
+
+
+
+    // buscarComFiltros(status?: StatusTarefa, prioridade?: string): Tarefa[] {
+
+    //     return this.tarefas.filter(tarefa => {
+
+    //         const bateuStatus = status ? tarefa.status === status : true;
+
+    //         const bateuPrioridade = prioridade ? tarefa.prioridade === prioridade : true;
+
+    //         return bateuStatus && bateuPrioridade;
+    //     });
+    // }
+
+
+    async buscarComFiltros(status?: StatusTarefa, prioridade?: string): Promise<TarefaEntity[]> {
+        const where : FindOptionsWhere<TarefaEntity> = {};
+
+        if (status) {
+            where.status = status;
+        }
+
+        if (prioridade) {
+            where.prioridade = prioridade;
+        }
+
+        return await this.tarefaRepository.find({ where });
+
+    }
+
+
+
+
     // 1. BUSCAR TODAS AS TAREFAS (SELECT * FROM tarefas)
     async findAll(): Promise<TarefaEntity[]> {
         return await this.tarefaRepository.find();
@@ -31,9 +80,26 @@ export class TarefasService {
 
     // 2. BUSCAR UMA TAREFA POR ID (SELECT * FROM tarefas WHERE id = ?)
     async findOne(id: string): Promise<TarefaEntity> {
-        const tarefa = await this.tarefaRepository.findOne({ where: { id } });
+
+
+        console.log('--- BUSCANDO TAREFA ---');
+        console.log('ID recebido:', JSON.stringify(id));
+        console.log('Tipo do ID:', typeof id);
+
+
+
+        // const idFormatado = id ? id.trim() : '';
+        const tarefa = await this.tarefaRepository.findOne({ where: { id } });    
+        // const tarefa = await this.tarefaRepository.findOne({ where: { id: idFormatado } });    
+
+
+        console.log('Resultado do Banco:', tarefa);
+
+
+
         if (!tarefa) {
             throw new NotFoundException(`Tarefa com ID "${id}" não encontrada.`);
+            console.log('Tipo do ID:', typeof id);
         }
         return tarefa;
     }
@@ -65,8 +131,9 @@ export class TarefasService {
 
 
     
-
-
+    // ----------------------------------------------
+    // CODIGO UTILIZA ARRAY COMO BANCO DE DADOS
+    // ----------------------------------------------
 
     // private tarefas: Tarefa[] = [
 

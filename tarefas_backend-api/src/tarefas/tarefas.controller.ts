@@ -1,7 +1,7 @@
 
 
 
-import { Controller, Get, Post, Put, Delete, Param, Body, HttpCode, HttpStatus, Query } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, HttpCode, HttpStatus, Query, ParseUUIDPipe } from '@nestjs/common';
 import { TarefasService } from './tarefas.service';
 import { StatusTarefa, Tarefa } from './tarefa.interface';
 import { TarefaEntity } from './entities/tarefa.entity';
@@ -22,6 +22,18 @@ export class TarefasController {
   // ---------------------------------------------------------------------------
   // 1. LISTAR TODAS AS TAREFAS (GET /tarefas)
   // ---------------------------------------------------------------------------
+
+
+  @Get()
+    async buscarComFiltros(
+    @Query('status') status?: StatusTarefa,
+    @Query('prioridade') prioridade?: string,
+  ) {
+      return await this.tarefasService.buscarComFiltros(status, prioridade);
+  }
+
+
+
   @Get()
   async findAll(): Promise<TarefaEntity[]> {
     // Chama o método findAll() do service, que executa o SELECT * no MySQL
@@ -34,10 +46,15 @@ export class TarefasController {
   // ---------------------------------------------------------------------------
   // 2. BUSCAR UMA TAREFA POR ID (GET /tarefas/:id)
   // ---------------------------------------------------------------------------
-  @Get()
-  async findOne(@Param('id') id: string): Promise<TarefaEntity> {
-    //O decorator @Param('id') extrai o ID enviado via url
-    return await this.tarefasService.findOne(id);
+  // @Get()
+  // async findOne(@Param('id' , new ParseUUIDPipe())  id: string): Promise<TarefaEntity> {
+  //   //O decorator @Param('id') extrai o ID enviado via url
+  //   return await this.tarefasService.findOne(id);
+  //   console.log("controller" + id);
+  // }
+  @Get(':id')
+  async findOne(@Param('id' , new ParseUUIDPipe())  id: string) {    
+    return await this.tarefasService.findOne(id);    
   }
 
 
@@ -85,7 +102,9 @@ export class TarefasController {
 
 
 
-
+  // ---------------------------------------------------------------------------
+  // CODIGO UTILIZA ARRAY COMO BANCO DE DADOS
+  // ---------------------------------------------------------------------------
 
     // @Get()
   // listar(

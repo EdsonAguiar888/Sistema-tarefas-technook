@@ -118,7 +118,7 @@ export class GraficosApexComponent implements AfterViewInit {
       xaxis: {
         categories: ['Baixa', 'Média', 'Alta']
       },
-      colors: ['#189c39'],
+      colors: ['#189c39'], 
       title: {
         text: 'Tarefas por Prioridade',
         align: 'left'

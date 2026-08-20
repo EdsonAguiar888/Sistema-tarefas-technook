@@ -30,7 +30,11 @@ export class TarefaService {
 
   // Buscar por ID (GET /tarefas/:id)
   buscarPorId(id: string): Observable<Tarefa> {
+
+
+    console.log('Tipo do ID:', typeof id);
     return this.http.get<Tarefa>(`${this.API_URL}/${id}`);
+    console.log("angular" +id);
   }
 
   // Criar nova tarefa (POST /tarefas)
