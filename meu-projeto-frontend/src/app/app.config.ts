@@ -1,15 +1,15 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { provideAnimations } from '@angular/platform-browser/animations'; // 1. Importe aqui
-
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { routes } from './app.routes';
-import { provideHttpClient } from '@angular/common/http';
+import { jwtInterceptor } from './interceptors/jwt.interceptor'; // Certifique-se que a importação está em letra minúscula se for uma função
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideHttpClient(),
-    provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
-    provideAnimations() // 2. Adicione aqui
+    // Registra o interceptor funcional de forma direta
+    provideHttpClient(
+      withInterceptors([jwtInterceptor])
+    )
   ]
 };

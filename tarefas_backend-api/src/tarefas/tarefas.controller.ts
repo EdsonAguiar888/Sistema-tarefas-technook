@@ -1,29 +1,32 @@
 
 
 
-import { Controller, Get, Post, Put, Delete, Param, Body, HttpCode, HttpStatus, Query, ParseUUIDPipe } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, HttpCode, HttpStatus, Query, ParseUUIDPipe, UseGuards } from '@nestjs/common';
 import { TarefasService } from './tarefas.service';
 import { StatusTarefa, Tarefa } from './tarefa.interface';
 import { TarefaEntity } from './entities/tarefa.entity';
-import { timingSafeEqual } from 'crypto';
+// import { RolesGuard } from '../auth/roles.guard';
+import { Roles } from '../auth/roles.decorator';
+import { Role } from '../usuarios/entities/usuario.entity';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('tarefas')
+@UseGuards(JwtAuthGuard)
+// @UseGuards(AuthGuard('jwt')) // 👈 Valida o Token JWT em todas as rotas de tarefas
 export class TarefasController {
-
+  
   // 2: Injeção de Dependência via Construtor.
   // O NestJS cria automaticamente uma instância do TarefasService e passa aqui.
   // O 'private readonly' cria a propriedade no controller e impede reatribuições.
   constructor(private readonly tarefasService: TarefasService) { }
-
-
-
-
   
+  
+    
   // ---------------------------------------------------------------------------
   // 1. LISTAR TODAS AS TAREFAS (GET /tarefas)
   // ---------------------------------------------------------------------------
-
-
+  
+  
   @Get()
     async buscarComFiltros(
     @Query('status') status?: StatusTarefa,
@@ -33,7 +36,7 @@ export class TarefasController {
   }
 
 
-
+  // Tanto ADMIN quanto USUARIO comum podem listar tarefas
   @Get()
   async findAll(): Promise<TarefaEntity[]> {
     // Chama o método findAll() do service, que executa o SELECT * no MySQL
@@ -42,16 +45,6 @@ export class TarefasController {
   }
 
 
-  
-  // ---------------------------------------------------------------------------
-  // 2. BUSCAR UMA TAREFA POR ID (GET /tarefas/:id)
-  // ---------------------------------------------------------------------------
-  // @Get()
-  // async findOne(@Param('id' , new ParseUUIDPipe())  id: string): Promise<TarefaEntity> {
-  //   //O decorator @Param('id') extrai o ID enviado via url
-  //   return await this.tarefasService.findOne(id);
-  //   console.log("controller" + id);
-  // }
   @Get(':id')
   async findOne(@Param('id' , new ParseUUIDPipe())  id: string) {    
     return await this.tarefasService.findOne(id);    
@@ -88,8 +81,11 @@ export class TarefasController {
   // ---------------------------------------------------------------------------
   // 5. DELETAR UMA TAREFA (DELETE /tarefas/:id)
   // ---------------------------------------------------------------------------
+  
+  // Apenas administradores podem excluir
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT) // Retorna status HTTP 204 (sem conteudo) ao deletar
+  @Roles(Role.ADMIN) // Apenas administradores podem excluir
   async remove(@Param('id') id: string): Promise<void> {
     await this.tarefasService.remove(id);
   }

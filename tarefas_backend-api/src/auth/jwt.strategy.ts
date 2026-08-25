@@ -1,20 +1,42 @@
 import { Injectable } from '@nestjs/common';
+
 import { PassportStrategy } from '@nestjs/passport';
-import { ExtractJwt, Strategy } from 'passport-jwt';
+
+import {
+  ExtractJwt,
+  Strategy,
+} from 'passport-jwt';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
+export class JwtStrategy
+  extends PassportStrategy(Strategy) {
+
   constructor() {
+
     super({
-      // Extrai o token do cabeçalho "Authorization: Bearer <TOKEN>"
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+
+      // Procura:
+      // Authorization: Bearer TOKEN
+      jwtFromRequest:
+        ExtractJwt.fromAuthHeaderAsBearerToken(),
+
+      // Token expirado será rejeitado
       ignoreExpiration: false,
-      secretOrKey: 'CHAVE_SECRETA_SUPER_SEGURA',
+
+      // Deve ser igual ao JwtModule
+      secretOrKey:
+        'MINHA_CHAVE_SUPER_SECRETA_123',
     });
   }
 
-  // Retorna os dados do usuário extraídos do payload do token
   async validate(payload: any) {
-    return { userId: payload.sub, email: payload.email };
+
+    console.log('JWT VALIDADO:', payload);
+
+    return {
+      userId: payload.sub,
+      email: payload.email,
+      role: payload.role,
+    };
   }
 }

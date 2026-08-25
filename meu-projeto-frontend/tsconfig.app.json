@@ -9,7 +9,7 @@
   },
   "include": [
     "src/**/*.ts"
-  ],
+, "src/app/app-routing.moduleAAAAAAAAAAA"  ],
   "exclude": [
     "src/**/*.spec.ts"
   ]

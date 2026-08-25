@@ -6,6 +6,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TarefasModule } from './tarefas/tarefas.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './auth/auth.module';
 // import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
@@ -24,6 +25,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       logging: true,
     }),
     TarefasModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
