@@ -106,7 +106,7 @@
       @for (tarefa of tarefas; track tarefa.id) {
 
       <div class="card">
-        
+
         <div class="card-tarefa" [class]="tarefa.prioridade">
 
           <div class="header-tarefa">
@@ -124,8 +124,15 @@
         </div>
 
         <div class="header-btn">
+
+
           <button class=" btn-editar" (click)="abrirModalEdicao(tarefa)">✏️ Editar</button>
-          <button class="btn-deletar" (click)="excluirTarefa(tarefa.id)">🗑️ Excluir</button>
+
+          <button *ngIf="authService.getRole() === 'admin'" (click)="excluirTarefa(tarefa.id)">
+            Excluir
+          </button>
+          
+          <!-- <button class="btn-deletar" (click)="excluirTarefa(tarefa.id)">🗑️ Excluir</button> -->
         </div>
 
       </div>

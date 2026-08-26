@@ -1,150 +1,134 @@
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Param,
+  Body,
+  HttpCode,
+  HttpStatus,
+  Query,
+  ParseUUIDPipe,
+  UseGuards
+} from '@nestjs/common';
 
+import {
+  TarefasService
+} from './tarefas.service';
 
+import {
+  StatusTarefa
+} from './tarefa.interface';
 
-import { Controller, Get, Post, Put, Delete, Param, Body, HttpCode, HttpStatus, Query, ParseUUIDPipe, UseGuards } from '@nestjs/common';
-import { TarefasService } from './tarefas.service';
-import { StatusTarefa, Tarefa } from './tarefa.interface';
-import { TarefaEntity } from './entities/tarefa.entity';
-// import { RolesGuard } from '../auth/roles.guard';
-import { Roles } from '../auth/roles.decorator';
-import { Role } from '../usuarios/entities/usuario.entity';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import {
+  TarefaEntity
+} from './entities/tarefa.entity';
+
+import {
+  Roles
+} from '../auth/roles.decorator';
+
+import {
+  Role
+} from '../usuarios/entities/usuario.entity';
+
+import {
+  JwtAuthGuard
+} from '../auth/jwt-auth.guard';
+
+import {
+  RolesGuard
+} from '../auth/roles.guard';
 
 @Controller('tarefas')
 @UseGuards(JwtAuthGuard)
-// @UseGuards(AuthGuard('jwt')) // 👈 Valida o Token JWT em todas as rotas de tarefas
 export class TarefasController {
-  
-  // 2: Injeção de Dependência via Construtor.
-  // O NestJS cria automaticamente uma instância do TarefasService e passa aqui.
-  // O 'private readonly' cria a propriedade no controller e impede reatribuições.
-  constructor(private readonly tarefasService: TarefasService) { }
-  
-  
-    
-  // ---------------------------------------------------------------------------
-  // 1. LISTAR TODAS AS TAREFAS (GET /tarefas)
-  // ---------------------------------------------------------------------------
-  
-  
+
+  constructor(
+    private readonly tarefasService: TarefasService
+  ) {}
+
+  // =====================================================
+  // LISTAR TAREFAS
+  // =====================================================
+
   @Get()
-    async buscarComFiltros(
+  async findAll(
     @Query('status') status?: StatusTarefa,
-    @Query('prioridade') prioridade?: string,
-  ) {
-      return await this.tarefasService.buscarComFiltros(status, prioridade);
+    @Query('prioridade') prioridade?: string
+  ): Promise<TarefaEntity[]> {
+
+    return await this.tarefasService.buscarComFiltros(
+      status,
+      prioridade
+    );
   }
 
-
-  // Tanto ADMIN quanto USUARIO comum podem listar tarefas
-  @Get()
-  async findAll(): Promise<TarefaEntity[]> {
-    // Chama o método findAll() do service, que executa o SELECT * no MySQL
-    return await this.tarefasService.findAll();
-    console.log(this.tarefasService)
-  }
-
+  // =====================================================
+  // BUSCAR UMA TAREFA
+  // =====================================================
 
   @Get(':id')
-  async findOne(@Param('id' , new ParseUUIDPipe())  id: string) {    
-    return await this.tarefasService.findOne(id);    
+  async findOne(
+    @Param(
+      'id',
+      new ParseUUIDPipe()
+    )
+    id: string
+  ) {
+
+    return await this.tarefasService.findOne(id);
   }
 
+  // =====================================================
+  // CRIAR TAREFA
+  // =====================================================
 
-
-  // ---------------------------------------------------------------------------
-  // 3. CRIAR UMA NOVA TAREFA (POST /tarefas)
-  // ---------------------------------------------------------------------------
   @Post()
-  async create(@Body() tarefaData: Partial<TarefaEntity>): Promise<TarefaEntity> {
-    // o decorator @Body extrai o JSON enviado no corpo da requisição HTTP
-    return await this.tarefasService.create(tarefaData);
-    console.log(tarefaData)
-    console.log(this.tarefasService)
+  async create(
+    @Body()
+    tarefaData: Partial<TarefaEntity>
+  ): Promise<TarefaEntity> {
+
+    return await this.tarefasService.create(
+      tarefaData
+    );
   }
 
+  // =====================================================
+  // ATUALIZAR TAREFA
+  // =====================================================
 
-  // ---------------------------------------------------------------------------
-  // 4. ATUALIZAR UMA TAREFA EXISTENTE (PUT /tarefas/:id)
-  // ---------------------------------------------------------------------------
   @Put(':id')
   async update(
-    @Param('id') id: string, 
-    @Body() tarefaData: Partial<TarefaEntity> 
+    @Param('id') id: string,
+    @Body()
+    tarefaData: Partial<TarefaEntity>
   ): Promise<TarefaEntity> {
-    // Passa o ID da URL e os novos dados do body para o service
-    return await this.tarefasService.update(id, tarefaData);  
-    }
 
-
-
-  // ---------------------------------------------------------------------------
-  // 5. DELETAR UMA TAREFA (DELETE /tarefas/:id)
-  // ---------------------------------------------------------------------------
-  
-  // Apenas administradores podem excluir
-  @Delete(':id')
-  @HttpCode(HttpStatus.NO_CONTENT) // Retorna status HTTP 204 (sem conteudo) ao deletar
-  @Roles(Role.ADMIN) // Apenas administradores podem excluir
-  async remove(@Param('id') id: string): Promise<void> {
-    await this.tarefasService.remove(id);
+    return await this.tarefasService.update(
+      id,
+      tarefaData
+    );
   }
 
+  // =====================================================
+  // EXCLUIR TAREFA
+  // SOMENTE ADMIN
+  // =====================================================
 
+  @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(
+    JwtAuthGuard,
+    RolesGuard
+  )
+  @Roles(Role.ADMIN)
+  async remove(
+    @Param('id') id: string
+  ): Promise<void> {
 
-
-
-
-
-
-
-  // ---------------------------------------------------------------------------
-  // CODIGO UTILIZA ARRAY COMO BANCO DE DADOS
-  // ---------------------------------------------------------------------------
-
-    // @Get()
-  // listar(
-  //   @Query('status') status?: StatusTarefa,
-  //   @Query('prioridade') prioridade?: string,
-  // ): Tarefa[] {
-
-  //   // Se passou status ou prioridade, aplica o filtro no service
-  //   if (status || prioridade) {
-  //     return this.tarefasService.buscarComFiltros(status, prioridade);
-  //   }
-  //   return this.tarefasService.listarTodas();
-  // }
-
-
-
-  // @Get()
-  // listarTodas() {
-  //   return this.tarefasService.listarTodas();
-  // }
-
-  // @Get(':id')
-  // buscarPorId(@Param('id') id: string) {
-  //   return this.tarefasService.buscarPorId(id);
-  // }
-
-  // @Post()
-  // criar(@Body() body: { titulo: string; descricao: string; prioridade: string; status: string; }) {
-  //   // console.log('Body recebido no Controller:' , body);
-  //   return this.tarefasService.criar(body.titulo, body.descricao, body.prioridade, body.status);
-  // }
-
-  // @Delete(':id')
-  // deletar(@Param('id') id: string) {
-  //   this.tarefasService.deletar(id);
-  // }
-
-  // @Put(':id')
-  // atualizar(
-  //   @Param('id') id: string,
-  //   @Body() body: { titulo?: string; descricao?: string; prioridade?: string; status?: StatusTarefa }
-  // ) {
-  //   return this.tarefasService.atualizar(id, body);
-  // }
-
-
+    await this.tarefasService.remove(id);
+  }
 }
