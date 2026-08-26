@@ -1,20 +1,17 @@
+
+
+
+
 import { Injectable } from '@angular/core';
+import {  HttpClient } from '@angular/common/http';
+import {  Observable,  tap } from 'rxjs';
 
-import {
-  HttpClient
-} from '@angular/common/http';
 
-import {
-  Observable,
-  tap
-} from 'rxjs';
 
-export enum Role {
-  ADMIN = 'admin',
-  USUARIO = 'usuario'
+export enum Role {  ADMIN = 'admin',  USUARIO = 'usuario'
 }
 
-interface LoginResponse {
+interface LoginResponse {  
   access_token: string;
   role: Role;
 }
