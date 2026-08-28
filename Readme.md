@@ -19,6 +19,7 @@ Sistema Full-Stack de gerenciamento de tarefas desenvolvido com **NestJS** no ba
 * **Linguagem:** TypeScript
 * **Comunicação HTTP:** Angular `HttpClient` com RxJS
 * **Estilização:** CSS3 puro com scoping por componente
+* **Autenticação e Login:** `JWT` 
 
 ---
 
@@ -216,6 +217,106 @@ npm run test
 ```
 
 ---
+
+
+# 📂 Fluxo de solicitação de Login e autenticação utilizando JWT
+
+
+###              1. LOGIN
+                    │
+                    ▼
+          ┌─────────────────┐
+          │ Angular Login   │
+          └────────┬────────┘
+                   │
+                   │ email + senha
+                   ▼
+          ┌─────────────────┐
+          │ AuthController  │
+          └────────┬────────┘
+                   │
+                   ▼
+          ┌─────────────────┐
+          │  AuthService    │
+          └────────┬────────┘
+                   │
+          procura usuário
+                   │
+                   ▼
+             PostgreSQL
+                   │
+                   ▼
+             bcrypt.compare
+                   │
+             senha correta?
+              │         │
+             NÃO       SIM
+              │         │
+             401        ▼
+                  cria payload
+                       │
+                       ▼
+                  JwtService
+                       │
+                       ▼
+                      JWT
+                       │
+                       ▼
+                    Angular
+                       │
+                       ▼
+                  localStorage
+
+Depois:
+
+###           2. REQUISIÇÃO
+                     │
+                     ▼
+              Angular HttpClient
+                     │
+                     ▼
+               JWT Interceptor
+                     │
+                     ▼
+        Authorization: Bearer JWT
+                     │
+                     ▼
+                  NestJS
+                     │
+                     ▼
+              JwtAuthGuard
+                     │
+                     ▼
+               JwtStrategy
+                     │
+          ┌──────────┴─────────┐
+          │                    │
+       inválido              válido
+          │                    │
+         401                   ▼
+                          request.user
+                               │
+                               ▼
+                         RolesGuard
+                               │
+                    ┌──────────┴──────────┐
+                    │                     │
+                 permitido             negado
+                    │                     │
+                    ▼                     ▼
+                Controller               403
+                    │
+                    ▼
+                 Service
+                    │
+                    ▼
+                PostgreSQL
+
+
+
+
+
+
 
 # 👨‍💻 Autor
 

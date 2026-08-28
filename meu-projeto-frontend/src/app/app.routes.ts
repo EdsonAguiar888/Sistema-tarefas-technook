@@ -1,5 +1,8 @@
-import { Routes } from '@angular/router';
 
+
+
+
+import { Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import { TarefaListaComponent } from './tarefas/TarefaListaComponent/tarefa-lista';
 import { GraficosApexComponent } from './tarefas/graficos-apex/graficos-apex';

@@ -1,7 +1,4 @@
-<nav
-  class="navbar"
-  *ngIf="authService.isLoggedIn()"
->
+<nav class="navbar" *ngIf="authService.isLoggedIn()">
 
   <div class="navbar-container">
 
@@ -13,20 +10,11 @@
     <!-- MENU -->
     <div class="navbar-menu">
 
-      <a
-        routerLink="/tarefas"
-        routerLinkActive="ativo"
-        class="navbar-link"
-      >
+      <a routerLink="/tarefas" routerLinkActive="ativo" class="navbar-link">
         📋 Tarefas
       </a>
 
-      <a
-        *ngIf="authService.isAdmin()"
-        routerLink="/graficos"
-        routerLinkActive="ativo"
-        class="navbar-link"
-      >
+      <a *ngIf="authService.isAdmin()" routerLink="/graficos" routerLinkActive="ativo" class="navbar-link">
         📊 Gráficos
       </a>
 
@@ -38,14 +26,10 @@
       <span class="usuario">
         👤
         {{ authService.getEmail() }}
-        
+
       </span>
 
-      <button
-        type="button"
-        class="btn-sair"
-        (click)="logout()"
-      >
+      <button type="button" class="btn-sair" (click)="logout()">
         Sair
       </button>
 

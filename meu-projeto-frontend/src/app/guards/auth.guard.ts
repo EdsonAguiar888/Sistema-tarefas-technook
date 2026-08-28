@@ -22,7 +22,7 @@ export class AuthGuard implements CanActivate {
   constructor(
     private authService: AuthService,
     private router: Router
-  ) {}
+  ) { }
 
   canActivate(
     route: ActivatedRouteSnapshot
@@ -65,93 +65,3 @@ export class AuthGuard implements CanActivate {
     return true;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import {
-//   Injectable
-// } from '@angular/core';
-
-// import {
-//   CanActivate,
-//   ActivatedRouteSnapshot,
-//   Router
-// } from '@angular/router';
-
-// import {
-//   AuthService,
-//   Role
-// } from '../services/auth.service';
-
-// @Injectable({
-//   providedIn: 'root'
-// })
-// export class AuthGuard implements CanActivate {
-
-//   constructor(
-//     private authService: AuthService,
-//     private router: Router
-//   ) {}
-
-//   canActivate(
-//     route: ActivatedRouteSnapshot
-//   ): boolean {
-
-//     console.log(
-//       '[AUTH GUARD] Verificando acesso'
-//     );
-
-//     if (!this.authService.isLoggedIn()) {
-
-//       console.log(
-//         '[AUTH GUARD] Usuário não autenticado'
-//       );
-
-//       this.router.navigate(['/login']);
-
-//       return false;
-//     }
-
-//     const rolesPermitidas =
-//       route.data['roles'] as Role[] | undefined;
-
-//     if (rolesPermitidas) {
-
-//       const roleUsuario =
-//         this.authService.getRole();
-
-//       console.log(
-//         '[AUTH GUARD] Role:',
-//         roleUsuario
-//       );
-
-//       if (
-//         !roleUsuario ||
-//         !rolesPermitidas.includes(roleUsuario)
-//       ) {
-
-//         console.log(
-//           '[AUTH GUARD] Acesso negado'
-//         );
-
-//         this.router.navigate(['/tarefas']);
-
-//         return false;
-//       }
-//     }
-
-//     return true;
-//   }
-// }

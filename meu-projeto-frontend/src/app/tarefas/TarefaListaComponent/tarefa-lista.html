@@ -1,3 +1,7 @@
+
+
+
+
 <div class="container">
   <h2>Gerenciador de Tarefas</h2>
 
@@ -128,10 +132,10 @@
 
           <button class=" btn-editar" (click)="abrirModalEdicao(tarefa)">✏️ Editar</button>
 
-          <button *ngIf="authService.getRole() === 'admin'" (click)="excluirTarefa(tarefa.id)">
+          <button class=" btn-deletar" *ngIf="authService.getRole() === 'admin'" (click)="excluirTarefa(tarefa.id)">
             Excluir
           </button>
-          
+
           <!-- <button class="btn-deletar" (click)="excluirTarefa(tarefa.id)">🗑️ Excluir</button> -->
         </div>
 
@@ -142,15 +146,6 @@
       }
     </div>
   </section>
-
-
-
-
-
-
-
-
-
 
 
 
